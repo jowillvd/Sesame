@@ -1,7 +1,7 @@
 package model.kaarten;
 
 public class Ketting implements Schat{
-	private int waarde;
+	private int waarde = 3;
 	private boolean gepakt;
 
 	@Override
