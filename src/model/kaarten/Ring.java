@@ -16,7 +16,7 @@ public class Ring implements Schat{
 
 	@Override
 	public void toonKaart(String icoon) {
-		// TODO Auto-generated method stub
+		icoon = "Ring";
 
 	}
 
