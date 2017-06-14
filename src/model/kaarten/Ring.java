@@ -1,7 +1,7 @@
 package model.kaarten;
 
 public class Ring implements Schat{
-	private int waarde;
+	private int waarde = 1;
 	private boolean gepakt;
 
 	@Override
