@@ -12,8 +12,7 @@ public class Toverlamp implements Schat{
 
 	@Override
 	public boolean isGepakt() {
-		// TODO Auto-generated method stub
-		return false;
+		return gepakt;
 	}
 
 	@Override
@@ -24,8 +23,7 @@ public class Toverlamp implements Schat{
 
 	@Override
 	public int getWaarde() {
-		// TODO Auto-generated method stub
-		return 0;
+		return waarde;
 	}
 
 	@Override
@@ -41,3 +39,4 @@ public class Toverlamp implements Schat{
 	}
 
 }
+
