@@ -1,7 +1,7 @@
 package model.kaarten;
 
 public class Toverlamp implements Schat{
-	private int waarde;
+	private int waarde = 5;
 	private boolean gepakt;
 
 	@Override
