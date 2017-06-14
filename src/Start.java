@@ -16,6 +16,7 @@ public class Start extends Application {
 		launch(args);
 		//Geestkaart slot = new Geestkaart();
 	}
+	//test
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

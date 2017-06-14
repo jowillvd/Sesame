@@ -19,5 +19,6 @@ public class KluisController {
 	public void draaiSlotRechts(int slot) {
 		this.kluis.draaiPositieRechts(slot);
 	}
+	
 
 }
