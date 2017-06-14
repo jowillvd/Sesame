@@ -16,7 +16,7 @@ public class Kelk implements Schat{
 
 	@Override
 	public void toonKaart(String icoon) {
-		// TODO Auto-generated method stub
+		icoon = "Kelk";
 
 	}
 
