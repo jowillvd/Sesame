@@ -5,8 +5,7 @@ public class Slang implements Kaart{
 
 	@Override
 	public void setGepakt(boolean gepakt) {
-		// TODO Auto-generated method stub
-
+		this.gepakt = gepakt;
 	}
 
 	@Override
