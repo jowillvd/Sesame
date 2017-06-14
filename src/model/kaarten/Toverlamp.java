@@ -6,8 +6,7 @@ public class Toverlamp implements Schat{
 
 	@Override
 	public void setGepakt(boolean gepakt) {
-		// TODO Auto-generated method stub
-
+		this.gepakt = gepakt;
 	}
 
 	@Override
@@ -28,14 +27,13 @@ public class Toverlamp implements Schat{
 
 	@Override
 	public void setSpeler(String speler) {
-		// TODO Auto-generated method stub
+		Speler.naam = speler;
 
 	}
 
 	@Override
 	public String getSpeler() {
-		// TODO Auto-generated method stub
-		return null;
+		return Speler.naam;
 	}
 
 }
