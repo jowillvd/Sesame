@@ -15,7 +15,7 @@ public class Slang implements Kaart{
 
 	@Override
 	public void toonKaart(String icoon) {
-		// TODO Auto-generated method stub
+		icoon = "Slang";
 
 	}
 
