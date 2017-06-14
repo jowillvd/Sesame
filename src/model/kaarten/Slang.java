@@ -11,8 +11,7 @@ public class Slang implements Kaart{
 
 	@Override
 	public boolean isGepakt() {
-		// TODO Auto-generated method stub
-		return false;
+		return gepakt;
 	}
 
 	@Override
