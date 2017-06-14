@@ -16,7 +16,7 @@ public class Toverlamp implements Schat{
 
 	@Override
 	public void toonKaart(String icoon) {
-		icoon = "Kelk";
+		icoon = "Toverlamp";
 
 	}
 
