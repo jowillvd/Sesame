@@ -1,4 +1,4 @@
-package model.schat;
+package model.kaarten;
 
 public class Ketting {
 

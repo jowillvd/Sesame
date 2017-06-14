@@ -1,8 +1,5 @@
 package model;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public enum SymboolEnum {
@@ -31,5 +28,9 @@ public enum SymboolEnum {
     public String toString() {
         return icoon;
     }
+
+	public String getIcoon() {
+		return icoon;
+	}
 
 }

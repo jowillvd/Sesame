@@ -25,16 +25,16 @@ public class Slot {
 		return symbolen;
 	}
 
+	public SymboolEnum getSymbool() {
+		return symbolen.get(positie);
+	}
+
 	public int getPositie() {
 		return this.positie;
 	}
 
-	public void draaiPositieLinks() {
-		this.positie = this.positie - 1;
-	}
-
-	public void draaiPositieRechts() {
-		this.positie = this.positie + 1;
+	public void setPositie(int positie) {
+		this.positie = positie;
 	}
 
 }

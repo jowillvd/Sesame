@@ -1,4 +1,4 @@
-package model;
+package model.kaarten;
 
 public class Slang {
 

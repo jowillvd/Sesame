@@ -16,42 +16,72 @@ public class Kluis {
 		}
 	}
 
-	/*
-	 * Return de slot die actief is
+	/**
+	 * Draai de positie van het slot links
+	 *
+	 * @param slot positie nummer van het slot
 	 */
-	public Slot getCurrentSlot() {
-		Slot slot = null;
+	public void draaiPositieLinks(int slot) {
+		int nPositie = this.sloten[slot].getPositie() + 1;
+		this.sloten[slot].setPositie(nPositie);
 
-		return slot;
+		String icoon = this.sloten[slot].getSymbool().getIcoon();
+		this.kluisView.update(icoon, slot);
+
 	}
 
-	/*
+	/**
+	 * Draai de positie van het slot rechts
+	 *
+	 * @param slot positie nummer van het slot
+	 */
+	public void draaiPositieRechts(int slot) {
+		int nPositie = this.sloten[slot].getPositie() - 1;
+		this.sloten[slot].setPositie(nPositie);
+
+		String icoon = this.sloten[slot].getSymbool().getIcoon();
+		this.kluisView.update(icoon, slot);
+	}
+
+	/**
 	 * Return een slot die gevraagd wordt
 	 * op basis van de positie van het slot
 	 */
 	public Slot selectSlot(int slotPositie) {
-		Slot slot = null;
-
-		return slot;
+		return this.sloten[slotPositie];
 	}
 
-	/*
-	 * Verander de positie van het slot dat actief is
+	/**
+	 * Return alle sloten.
+	 *
+	 * @return sloten array
 	 */
-	public void veranderSlotPositie(Slot slot) {
-
-		this.kluisView.update(icoon);
-	}
-
-	public boolean isOpen() {
-		return open;
-	}
-
-
 	public Slot[] getSloten() {
 		return sloten;
 	}
 
+	/**
+	 * Return een boolean om te kijken of de kluis open of dicht is.
+	 * True is gelijk aan open, false is gelijk aan dicht.
+	 *
+	 * @return boolean open of dicht
+	 */
+	public boolean isOpen() {
+		return open;
+	}
+
+	/**
+	 *
+	 */
+	public void setOpen(boolean bool) {
+		this.open = bool;
+	}
+
+	/**
+	 * De nieuwste kluisView.
+	 *
+	 * @param kluisView
+	 */
 	public void setKluisView(KluisView kluisView) {
 		this.kluisView = kluisView;
 	}

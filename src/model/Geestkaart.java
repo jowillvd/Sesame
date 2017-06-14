@@ -8,9 +8,12 @@ public class Geestkaart {
 		for (int i = 0; i < this.symbolen.length; i++) {
 			this.symbolen[i] = SymboolEnum.randomIcoon();
 		}
-		/*for (SymboolEnum symboolEnum : this.symbolen) {
+
+		//* Debug
+		for (SymboolEnum symboolEnum : this.symbolen) {
 			System.out.println(symboolEnum.toString());
-		}*/
+		}
+		// */
 	}
 
 	public SymboolEnum[] getSymbolen() {
