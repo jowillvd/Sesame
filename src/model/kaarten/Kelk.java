@@ -1,7 +1,7 @@
 package model.kaarten;
 
 public class Kelk implements Schat{
-	private int waarde;
+	private int waarde = 2;
 	private boolean gepakt;
 
 	@Override
