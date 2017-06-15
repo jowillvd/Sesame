@@ -3,8 +3,7 @@ package model;
 public class Schatkamer {
   public int kaarthouder;
   
-  public Schatkamer(){
-    
+  public Schatkamer(){ 
   }
   
   public int getCurrentHouder(){
@@ -12,7 +11,7 @@ public class Schatkamer {
   }
   
   public void selectHouder(){
-    
+    this.kaarthouder = kaarthouder;
   }
 
 }
