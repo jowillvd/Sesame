@@ -6,7 +6,7 @@ import java.util.List;
 public class KaartHouderFactory {
 	List<Kaart> kaarten = new ArrayList<Kaart>();
 
-	public int getKaarten(){
+	public int getAantal(){
 		return 0;
 
 	}
