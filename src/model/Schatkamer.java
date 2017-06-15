@@ -1,17 +1,17 @@
 package model;
 
 public class Schatkamer {
-  public int kaarthouder;
+	public int kaarthouder;
 
-  public Schatkamer(){
-  }
+	public Schatkamer(){
+	}
 
-  public int getCurrentHouder(){
-    return kaarthouder;
-  }
+	public int getCurrentHouder(){
+	    return kaarthouder;
+	}
 
-  public void selectHouder(){
-    this.kaarthouder = kaarthouder;
-  }
+	public void selectHouder(){
+	    this.kaarthouder = kaarthouder;
+	}
 
 }

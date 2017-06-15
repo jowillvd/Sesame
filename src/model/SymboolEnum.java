@@ -24,11 +24,6 @@ public enum SymboolEnum {
 		return iconen[random.nextInt(iconen.length)];
 	}
 
-	@Override
-    public String toString() {
-        return icoon;
-    }
-
 	public String getIcoon() {
 		return icoon;
 	}
