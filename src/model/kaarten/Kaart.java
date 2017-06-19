@@ -1,11 +1,11 @@
 package model.kaarten;
 
 public interface Kaart {
-
-	public boolean gepakt = false;
+	public void setGepakt(boolean gepakt);
 
 	public boolean isGepakt();
-	public boolean setGepakt();
-	public void toonKaart();
 
+	public void toonKaart(String icoon);
+
+	}
 }

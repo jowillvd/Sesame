@@ -1,7 +1,11 @@
 package model.kaarten;
 
-public interface Schat extends Kaart {
+public interface Schat extends Kaart{
 
-	public void geefAanSpeler();
+	public int getWaarde();
+
+	public void setSpeler(String speler);
+
+	public String getSpeler();
 
 }

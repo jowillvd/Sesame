@@ -1,8 +1,10 @@
 package view;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import model.Kluis;
 import model.Slot;
@@ -30,9 +32,16 @@ public class KluisView extends TilePane {
             for (int j = 0; j < this.rijen; j++) {
             	//ImageView button = createSlotButton(kluis.selectSlot(positie));
             	//* //Debug
+            	BorderPane slotPane = new BorderPane();
+            	Button buttonLinks = new Button("<--");
             	Label button = new Label(kluis.selectSlot(positie).getSymbolen().get(0).getIcoon());
-            	// */
-                this.getChildren().add(button);
+            	Button buttonRechts = new Button("-->");
+
+            	slotPane.setLeft(buttonLinks);
+            	slotPane.setCenter(button);
+            	slotPane.setRight(buttonRechts);
+
+                this.getChildren().add(slotPane);
                 positie++;
             }
         }

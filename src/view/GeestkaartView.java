@@ -2,6 +2,10 @@ package view;
 
 public class GeestkaartView {
 
+	public GeestkaartView() {
+
+	}
+
 	public void createGeestenkaart() {
 
 	}
