@@ -8,14 +8,14 @@ import java.util.List;
 public class Slot {
 
 	private List<SymboolEnum> symbolen;
-	private int positie;
+	private int positie = 0;
 
 	public Slot() {
 		symbolen = new ArrayList<SymboolEnum>(Arrays.asList(SymboolEnum.values()));
 		Collections.shuffle(symbolen);
 
-		/* Debug
-		for (Symbool symbool : symbolen) {
+		//* Debug
+		for (SymboolEnum symbool : symbolen) {
 			System.out.println(symbool.toString());
 		}
 		// */
@@ -35,6 +35,12 @@ public class Slot {
 
 	public void setPositie(int positie) {
 		this.positie = positie;
+		if(positie >= 6){
+			this.positie = 0;
+		}
+		else if(positie == 0){
+			this.positie = 6;
+		}
 	}
 
 }

@@ -1,5 +1,6 @@
 package view;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,7 +14,9 @@ public class KluisView extends TilePane {
     private static final double GAP = ELEMENT_SIZE / 10;
     private final int kolommen = 3;
 	private final int rijen = 3;
-
+	int pos = 0;
+	
+	
 	public KluisView(Kluis kluis) {
 		this.setPrefColumns(this.kolommen);
 		this.setPrefRows(this.rijen);
@@ -26,14 +29,32 @@ public class KluisView extends TilePane {
 	public void createSloten(Kluis kluis) {
 		this.getChildren().clear();
 		int positie = 0;
+		
         for (int i = 0; i < this.kolommen; i++) {
             for (int j = 0; j < this.rijen; j++) {
             	//ImageView button = createSlotButton(kluis.selectSlot(positie));
             	//* //Debug
+            	
+            	Button buttonRechts = new Button("-->");
             	Label button = new Label(kluis.selectSlot(positie).getSymbolen().get(0).getIcoon());
+            	Button buttonLinks = new Button("<--");
             	// */
-                this.getChildren().add(button);
+                this.getChildren().addAll(buttonLinks, button, buttonRechts);
+               
                 positie++;
+                
+                buttonRechts.setOnAction(e -> {
+                	Slot slot = kluis.selectSlot(0);
+                	slot.setPositie(slot.getPositie() + 1);
+                	button.setText(kluis.selectSlot(0).getSymbolen().get(kluis.selectSlot(pos).getPositie()).getIcoon());
+                });
+                
+                buttonLinks.setOnAction(e -> {
+                	Slot slot = kluis.selectSlot(0);
+                	slot.setPositie(slot.getPositie() - 1);
+                	button.setText(kluis.selectSlot(0).getSymbolen().get(kluis.selectSlot(pos).getPositie()).getIcoon());
+                });
+                
             }
         }
 
@@ -46,7 +67,7 @@ public class KluisView extends TilePane {
 	}
 
 	public void update(String icoon, int positie) {
-		this.getChildren().get(positie)...;
+		this.getChildren().get(positie);
 	}
 
 }

@@ -27,7 +27,6 @@ public class Kluis {
 
 		String icoon = this.sloten[slot].getSymbool().getIcoon();
 		this.kluisView.update(icoon, slot);
-
 	}
 
 	/**

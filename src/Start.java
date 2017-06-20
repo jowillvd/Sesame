@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import model.Geestkaart;
 import model.Kluis;
 import model.Schatkamer;
+import model.Slot;
 import view.GeestkaartView;
 import view.KluisView;
 
@@ -14,7 +15,11 @@ public class Start extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
-		//Geestkaart slot = new Geestkaart();
+	
+		//Slot slot = new Slot();
+		
+		
+		
 	}
 	//test
 
@@ -29,11 +34,14 @@ public class Start extends Application {
 		paneOpen.getChildren().add(new KluisView(kluis));
 		//paneOpen.getChildren().add(new GeestkaartView());
 
+		
 		Scene scene = new Scene(paneOpen, 1000, 400);
 		primaryStage.setTitle("Sesame");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
+		
+		
 		if(kluis.isOpen()) {
 
 		} else {
