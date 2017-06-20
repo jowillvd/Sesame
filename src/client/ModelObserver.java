@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 
 import host.KluisInterface;
 
-public interface KluisObserver extends Remote {
+public interface ModelObserver extends Remote {
 
 	public void modelVeranderd(KluisInterface t) throws RemoteException;
 

@@ -1,22 +1,23 @@
 package controller;
 
-import model.Kluis;
-import model.Slot;
+import java.rmi.RemoteException;
+
+import host.KluisInterface;
 
 public class KluisController {
 
-	private Kluis kluis;
+	private KluisInterface kluis;
 
-	public KluisController(Kluis kluis) {
+	public KluisController(KluisInterface kluis) {
 		this.kluis = kluis;
 
 	}
 
-	public void draaiSlotLinks(int slot) {
+	public void draaiSlotLinks(int slot) throws RemoteException {
 		this.kluis.draaiPositieLinks(slot);
 	}
 
-	public void draaiSlotRechts(int slot) {
+	public void draaiSlotRechts(int slot) throws RemoteException {
 		this.kluis.draaiPositieRechts(slot);
 	}
 

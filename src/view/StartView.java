@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class StartView extends StackPane {
+public class StartView extends StackPane implements View {
 
 	private GameController controller;
 
@@ -40,7 +40,8 @@ public class StartView extends StackPane {
 	}
 
 	private void joinAction(ActionEvent e) {
-
+		this.getChildren().clear();
+		controller.joinLobby();
 	}
 
 	private void handleidingAction(ActionEvent e) {
@@ -49,6 +50,10 @@ public class StartView extends StackPane {
 
 	private void stopAction(ActionEvent e) {
 
+	}
+
+	public View update(View view) {
+		return view;
 	}
 
 }

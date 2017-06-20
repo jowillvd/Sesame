@@ -1,24 +1,37 @@
 package host;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Enumeration;
+
+import model.Kluis;
 
 public class SesameServer {
 
-	public static void main(String[] args){
-		new SesameServer().runServer();
-	}
-
 	public void runServer() {
-		Kluis kluis = new Kluis(); // create calculator and treat as Counter
-		Countable counterSkeleton = (Countable) UnicastRemoteObject.exportObject(kluis, 0);
+		try {
+			Kluis kluis = new Kluis();
+			KluisInterface kluisInterface = (KluisInterface) UnicastRemoteObject.exportObject(kluis, 0); // cast to remote object
+			System.out.println(" - Kluis skeleton aangemaakt");
 
-		Countable counterSkeleton = 	(Countable) UnicastRemoteObject.exportObject(counter, 0); // cast to remote object
-		System.out.println("Counter skeleton created");
-		Registry registry = LocateRegistry.createRegistry(1099); // default port 1099 // run RMI registry on local host
-		System.out.println("RMI Registry starter");
-		registry.rebind("Counter", counterSkeleton); // bind calculator to RMI registry
-        System.out.println("Calculator skeleton bound");
-        System.out.println("Server running...");
+			// default port 1099 // run RMI registry on local host
+			Registry registry = LocateRegistry.createRegistry(1099);
+			System.out.println(" - RMI Registry starter");
+
+			// Rebind alle objecten met RMI registry
+			registry.rebind("Kluis", kluisInterface);
+	        System.out.println(" - Kluis skeleton gekoppelt aan Kluis");
+
+	        System.out.println(" ✓ Server is gestart. Gehost op:");
+	        System.out.println(InetAddress.getLocalHost().getHostAddress());
+		} catch (Exception e) {
+			System.out.println("EXCEPTION: " + e);
+		}
 	}
 
 }

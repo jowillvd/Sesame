@@ -1,10 +1,14 @@
 package model;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+
+import client.ModelObserver;
+import host.KluisInterface;
 import view.KluisView;
 
-public class Kluis {
+public class Kluis implements KluisInterface{
 
 	private Slot sloten[] = new Slot[9];
 	private KluisView kluisView;
@@ -84,6 +88,16 @@ public class Kluis {
 	 */
 	public void setKluisView(KluisView kluisView) {
 		this.kluisView = kluisView;
+	}
+
+
+
+
+
+	@Override
+	public void addObserver(ModelObserver mo) throws RemoteException {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -1,5 +1,7 @@
 package view;
 
+import controller.KluisController;
+import host.KluisInterface;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,6 +25,10 @@ public class KluisView extends TilePane {
         this.setVgap(GAP);
 		kluis.setKluisView(this);
 		this.createSloten(kluis);
+	}
+
+	public KluisView(KluisController kluisController, KluisInterface kluis) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public void createSloten(Kluis kluis) {
