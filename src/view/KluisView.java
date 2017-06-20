@@ -28,7 +28,7 @@ public class KluisView extends Pane {
 			achtergrond.setImage(new Image(new File("src/resources/layout/achtergrond_600.png").toURI().toString()));
 			slotPane.setPrefColumns(3);
 			slotPane.setPrefColumns(3);
-			slotPane.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
+			//slotPane.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
 		this.getChildren().addAll(slotPane, achtergrond);
 	}
 
