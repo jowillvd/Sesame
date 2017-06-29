@@ -43,4 +43,12 @@ public interface SesameServerInterface extends Remote {
 
 	public void steelSchat(int schat, int vanSpeler, int beurt) throws RemoteException;
 
+	public int beurtDoorgeven() throws RemoteException;
+
+	public int getGepakteSlangen() throws RemoteException;
+
+	public Object getGlobals() throws RemoteException;
+
+	public String getInstructie() throws RemoteException;
+
 }

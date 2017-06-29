@@ -22,6 +22,7 @@ public class Speler implements Serializable {
 	// Score staat in de volgende volgorde: [0]toverlamp, [1]kelk, [2]ketting, [3]ring
 	private List<List<Schat>> score = new ArrayList<List<Schat>>(4);
 	public String naam;
+	private boolean beurt = false;
 
 	public Speler(SesameObserver observer, int id) {
 		this.observers.add(0, observer);
@@ -58,6 +59,14 @@ public class Speler implements Serializable {
 
 	public void setSchat(Schat schat, int i) {
 		this.score.get(i).add(schat);
+	}
+
+	public boolean isAanDeBeurt() {
+		return this.beurt ;
+	}
+
+	public void setBeurt(boolean b) {
+		this.beurt = b;
 	}
 
 }

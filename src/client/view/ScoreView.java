@@ -60,15 +60,15 @@ public class ScoreView extends UnicastRemoteObject implements ViewInterface,
 		col1.setMaxWidth(160);
 		spelerPane.getColumnConstraints().add(col1);
 
-		for (int i = 1; i <= 4; i++) {
+		for (int i = 0; i == 4; i++) {
 			Rectangle schat = new Rectangle(25, 25);
 			schat.setFill(Color.web("#3f47cc"));
-			spelerPane.add(schat, i, 0);
+			spelerPane.add(schat, i+1, 0);
 
-			Label aantal = new Label(speler.getScore()[i-1] + "x");
+			Label aantal = new Label(speler.getScore()[i] + "x");
 			aantal.setTextFill(Color.web("#ffbc4e"));
 			aantal.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-			spelerPane.add(aantal, i, 1);
+			spelerPane.add(aantal, i+1, 1);
 		}
 
 		spelersPane.getChildren().add(spelerPane);
@@ -80,7 +80,8 @@ public class ScoreView extends UnicastRemoteObject implements ViewInterface,
 			for (Speler speler : server.getSpelers()) {
 				Platform.runLater(
 						() -> {
-							//this.toonSpeler(speler);
+							spelersPane.getChildren().clear();
+							this.toonSpeler(speler);
 						}
 				);
 			}

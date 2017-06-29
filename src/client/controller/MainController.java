@@ -13,6 +13,7 @@ import client.SesameClient;
 import client.SesameObserver;
 import client.view.GeestkaartView;
 import client.view.KluisView;
+import client.view.LinkerView;
 import client.view.LobbyView;
 import client.view.MainMenuView;
 import client.view.SchatkamerView;
@@ -74,7 +75,9 @@ public class MainController {
 
 			KluisController kluisController = new KluisController(this.view, this.server, this.speler);
 			this.viewRight(new ScoreView(new ScoreController(this.view, this.server, this.speler), this.server));
-			this.viewLeft(new GeestkaartView(kluisController, this.server));
+			LinkerView linkerView = new LinkerView(kluisController, this.server);
+			linkerView.addBottom(new GeestkaartView(kluisController, this.server));
+			this.viewLeft(linkerView);
 			this.viewCenter(new KluisView(kluisController, this.server));
 
 			//SchatkamerController DEBUG = new SchatkamerController(this.view, this.server, this.speler);

@@ -24,10 +24,11 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	private Geestkaart geestkaart = new Geestkaart();
 	private Kluis kluis = new Kluis(this, geestkaart.getSymboolIds());
 	private Schatkamer schatkamer = new Schatkamer(this);
+	private int gepakteSlangen;
+	private String instructies = "Welkom bij Sesame";
 
 	public SesameServer() throws RemoteException {
 		System.out.println(" - Server - Sesame Server wordt opgestart...");
-
 		try {
 			// Connect to RMI Registry
 			Registry registry = LocateRegistry.createRegistry(1099);
@@ -85,12 +86,19 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		System.out.println(" \u2713 Observer verwijderd");
 	}
 
+	/**
+	 * Voeg een observer toe aan de speler
+	 */
 	@Override
 	public void addObserver(SesameObserver observer, int positie, Speler speler) throws RemoteException {
 		int spelerID = speler.getId();
 		this.spelers.get(spelerID).setObserver(observer, positie);
 	}
 
+	/**
+	 *
+	 * @throws RemoteException
+	 */
 	private void nextSpeler() throws RemoteException {
 		if (spelers.size() > 0) {
 			for (SesameObserver observer : spelers.get(spelerIndex).getObservers()) {
@@ -106,26 +114,62 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see server.SesameServerInterface#getSpelers()
+	 * @throws RemoteException
+	 */
 	@Override
 	public List<Speler> getSpelers() throws RemoteException {
 		return this.spelers;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see server.SesameServerInterface#getGeestkaart()
+	 * @throws RemoteException
+	 */
 	@Override
 	public Geestkaart getGeestkaart() throws RemoteException {
 		return this.geestkaart;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see server.SesameServerInterface#getKluis()
+	 * @throws RemoteException
+	 */
 	@Override
 	public Kluis getKluis() throws RemoteException {
 		return this.kluis;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see server.SesameServerInterface#getSchatkamer()
+	 * @throws RemoteException
+	 */
 	@Override
 	public Schatkamer getSchatkamer() throws RemoteException {
 		return this.schatkamer;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see server.SesameServerInterface#getGepakteSlangen()
+	 * @throws RemoteException
+	 */
+	@Override
+	public int getGepakteSlangen() throws RemoteException {
+		return this.gepakteSlangen;
+	}
+
+	/**
+	 * Draai een slot naar links.
+	 * Nadat een slot is gedraaid worden alle spelers op de hoogte gesteld.
+	 * @param positie, de positie van het slot dat gedraaid moet worden.
+	 * @throws RemoteException
+	 */
 	@Override
 	public void draaiSlotLinks(int positie) throws RemoteException {
 		kluis.draaiSlotLinks(positie, geestkaart.getSymboolIds());
@@ -138,6 +182,12 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		}
 	}
 
+	/**
+	 * Draai een slot naar rechts.
+	 * Nadat een slot is gedraaid worden alle spelers op de hoogte gesteld.
+	 * @param positie, de positie van het slot dat gedraaid moet worden.
+	 * @throws RemoteException
+	 */
 	@Override
 	public void draaiSlotRechts(int positie) throws RemoteException {
 		kluis.draaiSlotRechts(positie, geestkaart.getSymboolIds());
@@ -150,6 +200,12 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		}
 	}
 
+	/**
+	 * Pak een kaart uit de schatkamer.
+	 * Nadat een kaart is gepakt worden alle spelers op de hoogte gesteld.
+	 * @param positie, de positie op welke stapel de kaart ligt
+	 * @throws RemoteException
+	 */
 	@Override
 	public void pakKaart(int positie) throws RemoteException {
 		schatkamer.pakKaart(positie);
@@ -184,6 +240,7 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	 * Start de game voor elke speler.
 	 * Hierbij wordt alleen de observer van LobbyView op de hoogte gesteld. De gamemode
 	 * veranderd naar buiten de kluis.
+	 * @throws RemoteException
 	 */
 	@Override
 	public void startGame() throws RemoteException {
@@ -197,6 +254,7 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	 * Toon de kluis voor elke speler.
 	 * Hierbij wordt alleen de observer van KluisView op de hoogte gesteld. De gamemode
 	 * veranderd naar in de schatkamer.
+	 * @throws RemoteException
 	 */
 	@Override
 	public void openKluis() throws RemoteException {
@@ -210,6 +268,7 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	 * De speler kan een kaart stelen.
 	 * Hierbij worden de observers van SchatkamerVie en ScoreView op de hoogte gesteld.
 	 * De gamemode veranderd naar schat stelen van medespeler.
+	 * @throws RemoteException
 	 */
 	@Override
 	public void steelMode() throws RemoteException {
@@ -218,6 +277,40 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 			speler.getObservers().get(0).updateMode();
 			speler.getObservers().get(3).updateMode();
 		}
+	}
+
+	/**
+	 * De beurt wordt doorgegeven aan de volgend speler.
+	 * @return spelerId, int id van de volgende speler
+	 * @throws RemoteException
+	 */
+	@Override
+	public int beurtDoorgeven() throws RemoteException {
+		System.out.println(" - Server - Beurt wordt doorgegeven");
+		int newBeurt = 0;
+		for (Speler speler : spelers) {
+			if(speler.isAanDeBeurt()) {
+				speler.setBeurt(false);
+				newBeurt = speler.getId() +1;
+				break;
+			}
+		}
+		if(newBeurt >= spelers.size()) {
+			newBeurt = 0;
+		}
+		spelers.get(newBeurt).setBeurt(true);
+		return spelers.get(newBeurt).getId();
+	}
+
+	@Override
+	public Object getGlobals() throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getInstructie() throws RemoteException {
+		return this.instructies ;
 	}
 
 }
