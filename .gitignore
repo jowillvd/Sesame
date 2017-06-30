@@ -11,4 +11,4 @@ MANIFEST.MF
 *.jar
 RemoteSystemsTempFiles
 bin
-media
+resources
