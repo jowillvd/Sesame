@@ -2,8 +2,10 @@ package client.controller;
 
 import java.rmi.RemoteException;
 
+import client.view.DummyView;
 import client.view.KluisView;
 import client.view.ViewLoader;
+
 import server.SesameServerInterface;
 
 public class SchatkamerController extends MainController {

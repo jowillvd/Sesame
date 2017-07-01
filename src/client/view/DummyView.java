@@ -1,8 +1,7 @@
-package client.controller;
+package client.view;
 
 import java.io.File;
 
-import client.view.ViewInterface;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
