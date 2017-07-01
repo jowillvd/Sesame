@@ -63,12 +63,24 @@ public class Schatkamer implements Serializable {
 
 	/**
 	 * Zet de stapel actief en pak er een kaart uit.
-	 * De kaart die gepakt is wordt tijdelijk in de ArrayList gepakteKaarten gezet.
+	 * De kaart die boven op de actieve stapel ligt wordt gecontroleerd of het
+	 * een slang is. De kaart die gepakt is wordt tijdelijk in de ArrayList gepakteKaarten gezet.
 	 * @param positie
+	 * @return schat, of de gepakte kaart een schat is
 	 */
-	public void pakKaart(int positie) {
+	public boolean pakKaart(int positie) {
+		Kaart kaart = stapels[positie].getBovensteKaart();
 		this.actiefStapel = positie;
-		this.checkKaart();
+		Boolean schat;
+		if(kaart.getKaart() == "slang") {
+			this.gepakteKaarten.clear();
+			schat = false;
+		} else {
+			this.gepakteKaarten.add(kaart);
+			schat = true;
+		}
+		stapels[actiefStapel].removeKaart(kaart);
+		return schat;
 	}
 
 	/**
@@ -76,7 +88,8 @@ public class Schatkamer implements Serializable {
 	 * @return kaart, String van kaart
 	 */
 	public String getKaart() {
-		return stapels[actiefStapel].getBovensteKaart().getKaart();
+		if(stapels[actiefStapel].isGevuld()) return stapels[actiefStapel].getBovensteKaart().getKaart();
+		return null;
 	}
 
 	/**
@@ -87,29 +100,8 @@ public class Schatkamer implements Serializable {
 		return this.actiefStapel;
 	}
 
-	/**
-	 * Controleer de gepakte kaart.
-	 * De kaart die boven op de actieve stapel ligt wordt gecontroleerd of het
-	 * een slang is. Als de kaart een slang is en er zijn nog geen andere kaarten
-	 * gepakt dan wordt de steel mode ingeschakeld. Als de kaart een slang is en
-	 * er zijn wel andere kaarten gepakt dan worden de gepakt kaarten verwijderd.
-	 */
-	public void checkKaart() {
-		Kaart kaart = stapels[actiefStapel].getBovensteKaart();
-		if(kaart.getKaart() == "slang"
-				&& gepakteKaarten.size() == 0) {
-			try {
-				this.server.steelMode();
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		} else if(kaart.getKaart() == "slang"
-				&& gepakteKaarten.size() > 0) {
-			this.gepakteKaarten.clear();
-		} else {
-			this.gepakteKaarten.add(kaart);
-		}
-		stapels[actiefStapel].removeKaart(kaart);
+	public List<Kaart> getGepakteKaarten() {
+		return this.gepakteKaarten;
 	}
 
 }

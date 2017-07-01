@@ -19,21 +19,21 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 import client.SesameObserver;
-import client.controller.KluisController;
-
+import client.controller.MainController;
 import server.SesameServerInterface;
+import server.model.Geestkaart;
 
 public class GeestkaartView extends UnicastRemoteObject implements ViewInterface,
 		SesameObserver {
 
 	private static final long serialVersionUID = 1L;
-	private KluisController controller;
+	private MainController controller;
 	private VBox pane = new VBox();
 	private TilePane geestkaartPane = new TilePane();
 	private int symboolIndex;
-	private boolean enabled;
+	private boolean enabled = false;
 
-	public GeestkaartView(KluisController controller, SesameServerInterface server) throws RemoteException {
+	public GeestkaartView(MainController controller, SesameServerInterface server) throws RemoteException {
 		this.controller = controller;
 		this.controller.setObserver(this, 1);
 
@@ -50,16 +50,16 @@ public class GeestkaartView extends UnicastRemoteObject implements ViewInterface
 		geestkaartPane.setBackground(new Background(new BackgroundFill(Color.rgb(55, 175, 175), null, null)));
 
 		this.toonSlangen(0);
-		this.toonGeestkaart(server.getGeestkaart().getSymbolen());
-		this.setEnabled(false);
+		this.toonGeestkaart(server.getGeestkaart());
 	}
 
-	private void toonGeestkaart(String[] symbolen) {
+	private void toonGeestkaart(Geestkaart geestkaart) {
 		geestkaartPane.getChildren().clear();
 		this.symboolIndex = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-            	ImageView symbool = createSymbool("models/" + symbolen[symboolIndex]);
+            	String icoon = geestkaart.getSymbolen()[symboolIndex].icoon;
+            	ImageView symbool = createSymbool("models/" + icoon);
             	//symbool.setTranslateY(50);
 
             	geestkaartPane.getChildren().add(symbool);

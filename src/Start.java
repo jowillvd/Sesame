@@ -8,7 +8,7 @@ public class Start extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Scene scene = new Scene(new ViewLoader(), 1268, 750);
+		Scene scene = new Scene(new ViewLoader(), 1600, 900);
 		primaryStage.setTitle("Sesame");
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);

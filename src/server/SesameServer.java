@@ -20,11 +20,12 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 
 	private static final long serialVersionUID = 1L;
 	private List<Speler> spelers = new ArrayList<Speler>();
-	private int spelerIndex;
 	private Geestkaart geestkaart = new Geestkaart();
-	private Kluis kluis = new Kluis(this, geestkaart.getSymboolIds());
+	private Kluis kluis = new Kluis();
 	private Schatkamer schatkamer = new Schatkamer(this);
+	private int spelerIndex;
 	private int gepakteSlangen;
+	private int pogingen = 0;
 	private String instructies = "Welkom bij Sesame";
 
 	public SesameServer() throws RemoteException {
@@ -48,6 +49,12 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		}
 	}
 
+	// Functies die met de communicatie tussen client en server te maken hebben
+
+	/**
+	 * Stel de spelers + observers op de hoogte.
+	 * @throws RemoteException
+	 */
 	@Override
 	public void notifySpelers() throws RemoteException {
 		System.out.println(" - Server - Spelers op de hoogte stellen");
@@ -93,14 +100,20 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	public void addObserver(SesameObserver observer, int positie, Speler speler) throws RemoteException {
 		int spelerID = speler.getId();
 		this.spelers.get(spelerID).setObserver(observer, positie);
+		if(spelerID == 0) {
+			observer.setEnabled(true);
+		}
 	}
 
+	// PRIVATE functies
+
 	/**
-	 *
+	 * De beurt wordt doorgegeven aan de volgend speler.
 	 * @throws RemoteException
 	 */
 	private void nextSpeler() throws RemoteException {
 		if (spelers.size() > 0) {
+			spelers.get(spelerIndex).setBeurt(false);
 			for (SesameObserver observer : spelers.get(spelerIndex).getObservers()) {
 				observer.setEnabled(false);
 			}
@@ -111,8 +124,57 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 			for (SesameObserver observer : spelers.get(spelerIndex).getObservers()) {
 				observer.setEnabled(true);
 			}
+			spelers.get(spelerIndex).setBeurt(true);
+			setInstructies(spelers.get(spelerIndex).naam + " is nu aan de beurt.");
 		}
 	}
+
+	/**
+	 *
+	 */
+	private void setInstructies(String instructie) {
+		this.instructies = instructie;
+	}
+
+	/**
+	 * Controleer de sloten.
+	 * Er wordt gecontroleerd of de sloten gelijk staan met de geestkaart.
+	 * @throws RemoteException
+	 */
+	private void checkSloten() {
+		int aantalJuist = 0;
+		for (int i = 0; i < kluis.getSloten().length; i++) {
+			int slotId = kluis.getSloten()[i].getSymbool().id;
+			int geestkaartSymboolId = geestkaart.getSymbolen()[i].id;
+
+			if(slotId == geestkaartSymboolId) {
+				kluis.getSloten()[i].setPositieJuist(true);
+				aantalJuist++;
+			}
+		}
+		if(aantalJuist == kluis.getSloten().length) {
+			try {
+				this.openKluis();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void checkPoging(int i) {
+		int slotId = kluis.getSloten()[i].getSymbool().id;
+		int geestkaartSymboolId = geestkaart.getSymbolen()[i].id;
+
+		if(slotId == geestkaartSymboolId) {
+			kluis.getSloten()[i].setPositieJuist(true);
+			this.pogingen = 0;
+		} else {
+			this.pogingen++;
+		}
+		checkSloten();
+	}
+
+	// De getters
 
 	/*
 	 * (non-Javadoc)
@@ -164,6 +226,13 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		return this.gepakteSlangen;
 	}
 
+	@Override
+	public String getInstructie() throws RemoteException {
+		return this.instructies ;
+	}
+
+	// De spel functies
+
 	/**
 	 * Draai een slot naar links.
 	 * Nadat een slot is gedraaid worden alle spelers op de hoogte gesteld.
@@ -172,11 +241,17 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	 */
 	@Override
 	public void draaiSlotLinks(int positie) throws RemoteException {
-		kluis.draaiSlotLinks(positie, geestkaart.getSymboolIds());
 		try {
-			this.getKluis().checkSloten(this.getGeestkaart().getSymboolIds()[positie]);
+			if(this.pogingen == 3) {
+				this.pogingen = 0;
+				this.nextSpeler();
+				System.out.println(" - Server - De pogingen zijn voorbij, volgende speler is aan de beurt");
+			} else if(this.pogingen < 3) {
+				kluis.draaiSlotLinks(positie);
+				this.checkPoging(positie);
+				System.out.println(" \u2713 Slot op positie \'" + positie + "\' aangepast");
+			}
 			this.notifySpelers();
-			System.out.println(" \u2713 Slot op positie \'" + positie + "\' aangepast");
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -190,11 +265,17 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	 */
 	@Override
 	public void draaiSlotRechts(int positie) throws RemoteException {
-		kluis.draaiSlotRechts(positie, geestkaart.getSymboolIds());
 		try {
-			kluis.checkSloten(this.getGeestkaart().getSymboolIds()[positie]);
+			if(this.pogingen == 3) {
+				this.pogingen = 0;
+				this.nextSpeler();
+				System.out.println(" - Server - De pogingen zijn voorbij, volgende speler is aan de beurt");
+			} else if(this.pogingen < 3) {
+				kluis.draaiSlotRechts(positie);
+				this.checkPoging(positie);
+				System.out.println(" \u2713 Slot op positie \'" + positie + "\' aangepast");
+			}
 			this.notifySpelers();
-			System.out.println(" \u2713 Slot op positie \'" + positie + "\' aangepast");
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -209,6 +290,14 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	@Override
 	public void pakKaart(int positie) throws RemoteException {
 		schatkamer.pakKaart(positie);
+		if(!schatkamer.pakKaart(positie)) {
+			if(schatkamer.getGepakteKaarten().size() > 0) {
+				this.sluitKluis();
+				this.nextSpeler();
+			} else {
+				this.steelMode();
+			}
+		}
 		try {
 			this.notifySpelers();
 			System.out.println(" \u2713 Schat op positie \'" + positie + "\' is getoond");
@@ -236,6 +325,8 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		}
 	}
 
+	// Alles wat met de game mode te maken heeft
+
 	/**
 	 * Start de game voor elke speler.
 	 * Hierbij wordt alleen de observer van LobbyView op de hoogte gesteld. De gamemode
@@ -248,6 +339,7 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		for(Speler speler : spelers) {
 			speler.getObservers().get(0).updateMode();
 		}
+		this.checkSloten();
 	}
 
 	/**
@@ -258,6 +350,13 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	 */
 	@Override
 	public void openKluis() throws RemoteException {
+		System.out.println(" - Server - Kluis wordt geopend en getoond aan alle spelers");
+		for(Speler speler : spelers) {
+			speler.getObservers().get(2).updateMode();
+		}
+	}
+
+	public void sluitKluis() throws RemoteException {
 		System.out.println(" - Server - Kluis wordt geopend en getoond aan alle spelers");
 		for(Speler speler : spelers) {
 			speler.getObservers().get(2).updateMode();
@@ -275,42 +374,7 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		System.out.println(" - Server - Het is mogelijk om een schat te stelen");
 		for(Speler speler : spelers) {
 			speler.getObservers().get(0).updateMode();
-			speler.getObservers().get(3).updateMode();
 		}
-	}
-
-	/**
-	 * De beurt wordt doorgegeven aan de volgend speler.
-	 * @return spelerId, int id van de volgende speler
-	 * @throws RemoteException
-	 */
-	@Override
-	public int beurtDoorgeven() throws RemoteException {
-		System.out.println(" - Server - Beurt wordt doorgegeven");
-		int newBeurt = 0;
-		for (Speler speler : spelers) {
-			if(speler.isAanDeBeurt()) {
-				speler.setBeurt(false);
-				newBeurt = speler.getId() +1;
-				break;
-			}
-		}
-		if(newBeurt >= spelers.size()) {
-			newBeurt = 0;
-		}
-		spelers.get(newBeurt).setBeurt(true);
-		return spelers.get(newBeurt).getId();
-	}
-
-	@Override
-	public Object getGlobals() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getInstructie() throws RemoteException {
-		return this.instructies ;
 	}
 
 }

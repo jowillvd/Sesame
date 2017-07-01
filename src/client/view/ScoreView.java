@@ -28,7 +28,7 @@ public class ScoreView extends UnicastRemoteObject implements ViewInterface,
 	private ScoreController controller;
 	private Pane pane = new Pane();
 	private VBox spelersPane = new VBox(8);
-	private boolean enabled;
+	private boolean enabled = false;
 
 	public ScoreView(ScoreController controller, SesameServerInterface server) throws RemoteException {
 		this.controller = controller;
@@ -107,7 +107,11 @@ public class ScoreView extends UnicastRemoteObject implements ViewInterface,
 
 	@Override
 	public void updateMode() throws RemoteException {
-		return;
+		Platform.runLater(
+				() -> {
+					this.controller.enableSteelmode();
+				}
+		);
 	}
 
 }

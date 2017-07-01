@@ -25,4 +25,8 @@ public class KaartenStapel implements Serializable {
 		return this.kaarten.getKaart(0);
 	}
 
+	public boolean isGevuld() {
+		return this.kaarten.isGevuld();
+	}
+
 }

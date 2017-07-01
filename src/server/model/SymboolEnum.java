@@ -13,8 +13,8 @@ public enum SymboolEnum implements Serializable {
 	TAPIJT("tapijt", 5)
 	;
 
-	private final String icoon;
-	private final int id;
+	public final String icoon;
+	public final int id;
 	private static final SymboolEnum[] iconen = values();
 	private static final Random random = new Random();
 
@@ -27,9 +27,6 @@ public enum SymboolEnum implements Serializable {
 		return iconen[random.nextInt(iconen.length)];
 	}
 
-	public String getIcoon() {
-		return icoon;
-	}
 
 	public int getId() {
 		return id;

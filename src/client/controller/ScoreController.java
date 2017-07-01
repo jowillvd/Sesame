@@ -1,16 +1,25 @@
 package client.controller;
 
+import java.rmi.RemoteException;
+
 import client.view.ViewLoader;
 
 import server.SesameServerInterface;
-import server.model.Speler;
 
 public class ScoreController extends MainController {
 
-	public ScoreController(ViewLoader viewLoader, SesameServerInterface server, Speler speler) {
+	public ScoreController(ViewLoader viewLoader, SesameServerInterface server, int spelerId) {
 		super(viewLoader);
-		this.server = server;
-		this.speler = speler;
+		try {
+			this.server = server;
+			this.speler = server.getSpelers().get(spelerId);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void enableSteelmode() {
+		this.gameMode = 3;
 	}
 
 }

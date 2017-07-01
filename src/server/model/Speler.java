@@ -13,11 +13,11 @@ public class Speler implements Serializable {
 	/**
 	 * Observer bestaat uit views, volgorde: 	[0]LobbyView, [0]ScoreView,
 	 * 											[1]GeestkaartView,
-	 * 											[2]KluisView,
-	 * 											[3]SchatkamerView
-	 * LobbyView wordt vervangen door ScoreView bij het opstarten van de Game
+	 * 											[2]KluisView, [2]SchatkamerView
+	 * LobbyView wordt vervangen door ScoreView bij het opstarten van de Game,
+	 * KluisView wordt vervangen door SchatkamerView bij het openen van de kluis.
 	 */
-	private List<SesameObserver> observers = new ArrayList<SesameObserver>(4);
+	private List<SesameObserver> observers = new ArrayList<SesameObserver>(3);
 	private int id;
 	// Score staat in de volgende volgorde: [0]toverlamp, [1]kelk, [2]ketting, [3]ring
 	private List<List<Schat>> score = new ArrayList<List<Schat>>(4);
@@ -36,6 +36,8 @@ public class Speler implements Serializable {
 
 	public void setObserver(SesameObserver observer, int positie) {
 		if(positie == 0) {
+			this.observers.set(positie, observer);
+		} else if(positie == 2){
 			this.observers.set(positie, observer);
 		} else {
 			this.observers.add(positie, observer);

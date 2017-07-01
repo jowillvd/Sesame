@@ -16,7 +16,6 @@ import client.view.KluisView;
 import client.view.LinkerView;
 import client.view.LobbyView;
 import client.view.MainMenuView;
-import client.view.SchatkamerView;
 import client.view.ScoreView;
 import client.view.ViewInterface;
 import client.view.ViewLoader;
@@ -30,6 +29,7 @@ public class MainController {
 	protected ViewLoader view;
 	protected SesameServerInterface server;
 	protected Speler speler;
+	protected int gameMode = 0; // 0 = neutraal, 1 = kluis, 2 = schatkamer, 3 = steelmode
 
 	public MainController(ViewLoader viewLoader) {
 		this.view = viewLoader;
@@ -73,15 +73,12 @@ public class MainController {
 			beneden.setImage(new Image(new File("src/client/resources/layout/beneden.png").toURI().toString()));
 			this.view.setBottom(beneden);
 
-			KluisController kluisController = new KluisController(this.view, this.server, this.speler);
-			this.viewRight(new ScoreView(new ScoreController(this.view, this.server, this.speler), this.server));
-			LinkerView linkerView = new LinkerView(kluisController, this.server);
-			linkerView.addBottom(new GeestkaartView(kluisController, this.server));
+			KluisController kluisController = new KluisController(this.view, this.server, this.speler.getId());
+			this.viewRight(new ScoreView(new ScoreController(this.view, this.server, this.speler.getId()), this.server));
+			LinkerView linkerView = new LinkerView(this, this.server);
+			linkerView.addBottom(new GeestkaartView(this, this.server));
 			this.viewLeft(linkerView);
 			this.viewCenter(new KluisView(kluisController, this.server));
-
-			//SchatkamerController DEBUG = new SchatkamerController(this.view, this.server, this.speler);
-			//this.viewCenter(new SchatkamerView(DEBUG));
 		} catch (RemoteException re) {
 			re.printStackTrace();
 		}
@@ -123,6 +120,10 @@ public class MainController {
 
 	public void viewRight(ViewInterface view) {
 		this.view.setRight((Pane) view.getPane());
+	}
+
+	public boolean isSpelerAanDeBeurt() {
+		return speler.isAanDeBeurt();
 	}
 
 }

@@ -21,11 +21,15 @@ public class Geestkaart implements Serializable {
 		return ids;
 	}
 
-	public String[] getSymbolen() {
+	/*public String[] getSymbolen() {
 		String[] symbolen = new String[9];
 		for (int i = 0; i < this.symbolen.length; i++) {
-			symbolen[i] = this.symbolen[i].getIcoon();
+			symbolen[i] = this.symbolen[i].icoon;
 		}
+		return symbolen;
+	}*/
+
+	public SymboolEnum[] getSymbolen() {
 		return symbolen;
 	}
 

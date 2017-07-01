@@ -23,4 +23,9 @@ public class KaartenFactory implements Serializable {
 		return kaarten.get(positie);
 	}
 
+	public boolean isGevuld() {
+		if(kaarten.size() > 0) return true;
+		return false;
+	}
+
 }

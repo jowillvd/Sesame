@@ -13,10 +13,9 @@ public class Slot implements Serializable {
 	private int positie;
 	private boolean positieJuist = false;
 
-	public Slot(int geestkaartSymboolId) {
+	public Slot() {
 		symbolen = new ArrayList<SymboolEnum>(Arrays.asList(SymboolEnum.values()));
 		Collections.shuffle(symbolen);
-		checkPositie(geestkaartSymboolId);
 	}
 
 	public List<SymboolEnum> getSymbolen() {
@@ -27,20 +26,16 @@ public class Slot implements Serializable {
 		return symbolen.get(positie);
 	}
 
-	public int getPositie() {
+	public int getSymboolPositie() {
 		return this.positie;
 	}
 
-	public void setPositie(int positie) {
+	public void setSymboolPositie(int positie) {
 		this.positie = positie;
 	}
 
-	public void checkPositie(int geestkaartSymboolId) {
-		if(getSymbool().getId() == geestkaartSymboolId) {
-			this.positieJuist = true;
-		} else if(getSymbool().getId() != geestkaartSymboolId){
-			this.positieJuist = false;
-		}
+	public void setPositieJuist(boolean bool) {
+		this.positieJuist = bool;
 	}
 
 	public boolean isPositieJuist() {
