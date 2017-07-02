@@ -10,7 +10,9 @@ import server.SesameServerInterface;
 
 public class SchatkamerController extends MainController {
 
-	public SchatkamerController(ViewLoader viewLoader, SesameServerInterface server, int spelerId) {
+	MainController controller;
+
+	public SchatkamerController(ViewLoader viewLoader, SesameServerInterface server, int spelerId, MainController mainController) {
 		super(viewLoader);
 		try {
 			this.server = server;
@@ -18,6 +20,7 @@ public class SchatkamerController extends MainController {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+		this.controller = mainController;
 	}
 
 	public void pakKaart(int positie) {
@@ -34,16 +37,26 @@ public class SchatkamerController extends MainController {
 
 	public void sluitKluis() {
 		try {
-			if(this.gameMode != 3) {
-				KluisController kluisController = new KluisController(this.view, this.server, this.speler.getId());
+			if(this.getGameMode() != 3) {
+				KluisController kluisController = new KluisController(this.view, this.server, speler.getId(), controller);
 				this.viewCenter(new KluisView(kluisController, this.server));
-				this.gameMode = 1;
+				this.setGameMode(1);
 			} else {
 				this.viewCenter(new DummyView());
 			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void setGameMode(int i) {
+		controller.setGameMode(i);
+	}
+
+	@Override
+	public int getGameMode() {
+		return controller.getGameMode();
 	}
 
 }

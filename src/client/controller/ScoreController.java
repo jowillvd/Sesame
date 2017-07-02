@@ -8,7 +8,9 @@ import server.SesameServerInterface;
 
 public class ScoreController extends MainController {
 
-	public ScoreController(ViewLoader viewLoader, SesameServerInterface server, int spelerId) {
+	MainController controller;
+
+	public ScoreController(ViewLoader viewLoader, SesameServerInterface server, int spelerId, MainController mainController) {
 		super(viewLoader);
 		try {
 			this.server = server;
@@ -16,10 +18,17 @@ public class ScoreController extends MainController {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+		this.controller = mainController;
 	}
 
-	public void enableSteelmode() {
-		this.gameMode = 3;
+	@Override
+	public void setGameMode(int i) {
+		controller.setGameMode(i);
+	}
+
+	@Override
+	public int getGameMode() {
+		return controller.getGameMode();
 	}
 
 }

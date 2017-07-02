@@ -11,7 +11,6 @@ import javafx.scene.layout.Pane;
 
 import client.SesameClient;
 import client.SesameObserver;
-import client.view.GeestkaartView;
 import client.view.KluisView;
 import client.view.LinkerView;
 import client.view.LobbyView;
@@ -73,12 +72,17 @@ public class MainController {
 			beneden.setImage(new Image(new File("src/client/resources/layout/beneden.png").toURI().toString()));
 			this.view.setBottom(beneden);
 
-			KluisController kluisController = new KluisController(this.view, this.server, this.speler.getId());
-			this.viewRight(new ScoreView(new ScoreController(this.view, this.server, this.speler.getId()), this.server));
+			KluisController kluisController = new KluisController(this.view, this.server, speler.getId(), this);
+			ScoreController scoreController = new ScoreController(this.view, this.server, speler.getId(), this);
+
+			ScoreView scoreView = new ScoreView(scoreController, this.server);
 			LinkerView linkerView = new LinkerView(this, this.server);
-			linkerView.addBottom(new GeestkaartView(this, this.server));
+			KluisView kluisView = new KluisView(kluisController, this.server);
+
+			this.viewRight(scoreView);
 			this.viewLeft(linkerView);
-			this.viewCenter(new KluisView(kluisController, this.server));
+			this.viewCenter(kluisView);
+			this.setGameMode(1);
 		} catch (RemoteException re) {
 			re.printStackTrace();
 		}
@@ -94,6 +98,15 @@ public class MainController {
 			this.speler = server.registerSpeler(new LobbyView(this, this.server), spelernaam);
 
 		} catch (RemoteException | NotBoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void beurtDoorgeven() {
+		try {
+			this.setGameMode(1);
+			this.server.beurtDoorgeven();
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
@@ -124,6 +137,14 @@ public class MainController {
 
 	public boolean isSpelerAanDeBeurt() {
 		return speler.isAanDeBeurt();
+	}
+
+	public int getGameMode() {
+		return this.gameMode;
+	}
+
+	public void setGameMode(int i) {
+		this.gameMode = i;
 	}
 
 }

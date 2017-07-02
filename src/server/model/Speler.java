@@ -1,6 +1,7 @@
 package server.model;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class Speler implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Observer bestaat uit views, volgorde: 	[0]LobbyView, [0]ScoreView,
-	 * 											[1]GeestkaartView,
+	 * 											[1]LinkerView,
 	 * 											[2]KluisView, [2]SchatkamerView
 	 * LobbyView wordt vervangen door ScoreView bij het opstarten van de Game,
 	 * KluisView wordt vervangen door SchatkamerView bij het openen van de kluis.
@@ -34,12 +35,15 @@ public class Speler implements Serializable {
 		return this.observers;
 	}
 
-	public void setObserver(SesameObserver observer, int positie) {
+	public void setObserver(SesameObserver observer, int positie) throws RemoteException {
 		if(positie == 0) {
+			if(id == 0) observer.setEnabled(true);
 			this.observers.set(positie, observer);
-		} else if(positie == 2){
+		} else if(observers.size() == 3){
+			if(beurt) observer.setEnabled(true);
 			this.observers.set(positie, observer);
 		} else {
+			if(id == 0) observer.setEnabled(true);
 			this.observers.add(positie, observer);
 		}
 	}

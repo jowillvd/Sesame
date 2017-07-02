@@ -47,4 +47,6 @@ public interface SesameServerInterface extends Remote {
 
 	public String getInstructie() throws RemoteException;
 
+	public void beurtDoorgeven() throws RemoteException;
+
 }

@@ -6,9 +6,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import java.io.File;
 import java.rmi.RemoteException;
@@ -18,6 +24,7 @@ import client.SesameObserver;
 import client.controller.MainController;
 
 import server.SesameServerInterface;
+import server.model.Geestkaart;
 
 public class LinkerView extends UnicastRemoteObject implements ViewInterface,
 		SesameObserver {
@@ -26,6 +33,9 @@ public class LinkerView extends UnicastRemoteObject implements ViewInterface,
 	private MainController controller;
 	private VBox pane = new VBox(50);
 	private StackPane instructiePane = new StackPane();
+	private Pane slangenPane = new Pane();
+	private TilePane geestkaartPane = new TilePane();
+	private int symboolIndex;
 	private boolean enabled = false;
 
 	public LinkerView(MainController controller, SesameServerInterface server) throws RemoteException {
@@ -39,6 +49,10 @@ public class LinkerView extends UnicastRemoteObject implements ViewInterface,
 		Button beindigBtn = new Button("Beurt doorgeven");
 		beindigBtn.setMaxSize(280, 60);
 		beindigBtn.setPrefSize(280, 60);
+		beindigBtn.setDisable(true);
+		beindigBtn.setOnAction(e-> {
+    		this.controller.beurtDoorgeven();
+    	});
 
 		instructiePane.setMaxSize(280, 200);
 		instructiePane.setPrefSize(280, 200);
@@ -46,13 +60,49 @@ public class LinkerView extends UnicastRemoteObject implements ViewInterface,
 		instructiePane.setStyle("-fx-background-color: rgb(255, 189, 77)");
 		instructiePane.getChildren().add(new Label("TESTJEElwke"));
 
-		this.pane.getChildren().addAll(beindigBtn, this.instructiePane);
+		geestkaartPane.setPrefColumns(3);
+		geestkaartPane.setPrefRows(3);
+		geestkaartPane.setHgap(15);
+		geestkaartPane.setVgap(5);
+		//geestkaartPane.setTranslateX(0);
+		//geestkaartPane.setTranslateY(-10);
+		geestkaartPane.setMaxSize(280, 280);
+		geestkaartPane.setAlignment( Pos.CENTER );
+		geestkaartPane.setBackground(new Background(new BackgroundFill(Color.rgb(55, 175, 175), null, null)));
+
+		toonSlangen(0);
+		this.toonGeestkaart(server.getGeestkaart());
+
+		this.pane.getChildren().addAll(beindigBtn, this.instructiePane, this.slangenPane, this.geestkaartPane);
 	}
 
-	private ImageView createImage(String pad) {
+	private ImageView createGraphic(String pad) {
 		ImageView graphic = new ImageView();
 		graphic.setImage(new Image(new File("src/client/resources/" + pad + ".png").toURI().toString()));
 		return graphic;
+	}
+
+	private void toonSlangen(int aantal) {
+		this.slangenPane.getChildren().clear();
+		Label slangen = new Label("Slangen: (" +aantal+ "/7)");
+		slangen.setTextFill(Color.web("#ffbc4e"));
+		slangen.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
+		this.slangenPane.getChildren().add(slangen);
+	}
+
+	private void toonGeestkaart(Geestkaart geestkaart) {
+		geestkaartPane.getChildren().clear();
+		this.symboolIndex = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+            	String icoon = geestkaart.getSymbolen()[symboolIndex].icoon;
+            	ImageView symbool = createGraphic("models/" + icoon);
+            	//symbool.setTranslateY(50);
+
+            	geestkaartPane.getChildren().add(symbool);
+            	symboolIndex++;
+            }
+		}
 	}
 
 	@Override
@@ -60,12 +110,23 @@ public class LinkerView extends UnicastRemoteObject implements ViewInterface,
 		Platform.runLater(
 				() -> {
 					try {
+						this.enableKnop();
 						this.setInstructie(server.getInstructie());
+						this.toonSlangen(server.getGepakteSlangen());
+
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}
 				}
 		);
+	}
+
+	private void enableKnop() throws RemoteException {
+		if(controller.getGameMode() == 2) {
+			this.pane.getChildren().get(0).setDisable(!this.isEnabled());
+		} else {
+			this.pane.getChildren().get(0).setDisable(true);
+		}
 	}
 
 	private void setInstructie(String instructie) {
@@ -89,7 +150,15 @@ public class LinkerView extends UnicastRemoteObject implements ViewInterface,
 
 	@Override
 	public void updateMode() throws RemoteException {
-		return;
+		Platform.runLater(
+				() -> {
+					try {
+						this.enableKnop();
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+				}
+		);
 	}
 
 	public void addBottom(GeestkaartView geestkaartView) {

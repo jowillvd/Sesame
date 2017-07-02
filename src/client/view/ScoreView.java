@@ -109,7 +109,7 @@ public class ScoreView extends UnicastRemoteObject implements ViewInterface,
 	public void updateMode() throws RemoteException {
 		Platform.runLater(
 				() -> {
-					this.controller.enableSteelmode();
+					this.controller.setGameMode(3);
 				}
 		);
 	}

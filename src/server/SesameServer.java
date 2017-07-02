@@ -100,9 +100,6 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	public void addObserver(SesameObserver observer, int positie, Speler speler) throws RemoteException {
 		int spelerID = speler.getId();
 		this.spelers.get(spelerID).setObserver(observer, positie);
-		if(spelerID == 0) {
-			observer.setEnabled(true);
-		}
 	}
 
 	// PRIVATE functies
@@ -112,6 +109,7 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	 * @throws RemoteException
 	 */
 	private void nextSpeler() throws RemoteException {
+		System.out.println(spelers.size());
 		if (spelers.size() > 0) {
 			spelers.get(spelerIndex).setBeurt(false);
 			for (SesameObserver observer : spelers.get(spelerIndex).getObservers()) {
@@ -353,13 +351,17 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		System.out.println(" - Server - Kluis wordt geopend en getoond aan alle spelers");
 		for(Speler speler : spelers) {
 			speler.getObservers().get(2).updateMode();
+			speler.getObservers().get(1).updateMode();
 		}
 	}
 
 	public void sluitKluis() throws RemoteException {
-		System.out.println(" - Server - Kluis wordt geopend en getoond aan alle spelers");
+		System.out.println(" - Server - De kluis wordt gesloten");
+		this.kluis = new Kluis();
 		for(Speler speler : spelers) {
 			speler.getObservers().get(2).updateMode();
+			speler.getObservers().get(1).updateMode();
+			this.notifySpelers();
 		}
 	}
 
@@ -375,6 +377,16 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		for(Speler speler : spelers) {
 			speler.getObservers().get(0).updateMode();
 		}
+	}
+
+	public void beurtDoorgeven() throws RemoteException {
+		System.out.println("BEURT DOORGEVEN");
+		this.kluis = new Kluis();
+		for(Speler speler : spelers) {
+			speler.getObservers().get(2).updateMode();
+			speler.getObservers().get(1).updateMode();
+		}
+		this.nextSpeler();
 	}
 
 }
