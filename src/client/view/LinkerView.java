@@ -9,12 +9,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 import java.io.File;
 import java.rmi.RemoteException;
@@ -32,7 +32,7 @@ public class LinkerView extends UnicastRemoteObject implements ViewInterface,
 	private static final long serialVersionUID = 1L;
 	private MainController controller;
 	private VBox pane = new VBox(50);
-	private StackPane instructiePane = new StackPane();
+	private VBox instructiePane = new VBox(5);
 	private Pane slangenPane = new Pane();
 	private TilePane geestkaartPane = new TilePane();
 	private int symboolIndex;
@@ -58,7 +58,16 @@ public class LinkerView extends UnicastRemoteObject implements ViewInterface,
 		instructiePane.setPrefSize(280, 200);
 		instructiePane.setAlignment( Pos.CENTER );
 		instructiePane.setStyle("-fx-background-color: rgb(255, 189, 77)");
-		instructiePane.getChildren().add(new Label("TESTJEElwke"));
+		Label instructie = new Label(server.getInstructie());
+		instructie.setWrapText(true);
+		instructie.setPrefSize(240,180);
+		instructie.setMaxWidth(Double.MAX_VALUE);
+		instructie.setAlignment(Pos.CENTER);
+		instructie.setTextAlignment(TextAlignment.CENTER);
+		instructiePane.getChildren().add(instructie);
+
+		slangenPane.setMaxSize(280, 20);
+		slangenPane.setPrefSize(280, 20);
 
 		geestkaartPane.setPrefColumns(3);
 		geestkaartPane.setPrefRows(3);
@@ -113,6 +122,7 @@ public class LinkerView extends UnicastRemoteObject implements ViewInterface,
 						this.enableKnop();
 						this.setInstructie(server.getInstructie());
 						this.toonSlangen(server.getGepakteSlangen());
+						this.toonGeestkaart(server.getGeestkaart());
 
 					} catch (RemoteException e) {
 						e.printStackTrace();
@@ -130,7 +140,8 @@ public class LinkerView extends UnicastRemoteObject implements ViewInterface,
 	}
 
 	private void setInstructie(String instructie) {
-		instructiePane.getChildren().set(0, new Label(instructie));
+		Label label = (Label) instructiePane.getChildren().get(0);
+		label.setText(instructie);
 	}
 
 	@Override

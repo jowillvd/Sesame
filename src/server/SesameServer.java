@@ -12,6 +12,7 @@ import java.util.List;
 import client.SesameObserver;
 
 import server.model.Speler;
+import server.model.kaarten.Schat;
 import server.model.Geestkaart;
 import server.model.Kluis;
 import server.model.Schatkamer;
@@ -287,11 +288,11 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	 */
 	@Override
 	public void pakKaart(int positie) throws RemoteException {
-		schatkamer.pakKaart(positie);
-		if(!schatkamer.pakKaart(positie)) {
+		if(!(schatkamer.pakKaart(positie) instanceof Schat)) {
+			this.gepakteSlangen++;
 			if(schatkamer.getGepakteKaarten().size() > 0) {
-				this.sluitKluis();
-				this.nextSpeler();
+				schatkamer.getGepakteKaarten().clear();
+				this.beurtDoorgeven();
 			} else {
 				this.steelMode();
 			}
@@ -355,16 +356,6 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		}
 	}
 
-	public void sluitKluis() throws RemoteException {
-		System.out.println(" - Server - De kluis wordt gesloten");
-		this.kluis = new Kluis();
-		for(Speler speler : spelers) {
-			speler.getObservers().get(2).updateMode();
-			speler.getObservers().get(1).updateMode();
-			this.notifySpelers();
-		}
-	}
-
 	/**
 	 * De speler kan een kaart stelen.
 	 * Hierbij worden de observers van SchatkamerVie en ScoreView op de hoogte gesteld.
@@ -374,17 +365,26 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	@Override
 	public void steelMode() throws RemoteException {
 		System.out.println(" - Server - Het is mogelijk om een schat te stelen");
+		setInstructies(spelers.get(spelerIndex).naam + " zijn eerste kaart is een slang. "
+				+ spelers.get(spelerIndex).naam + " mag nu een schat stelen van een willekeurige speler");
 		for(Speler speler : spelers) {
 			speler.getObservers().get(0).updateMode();
 		}
 	}
 
+	/**
+	 * @throws RemoteException
+	 */
 	public void beurtDoorgeven() throws RemoteException {
-		System.out.println("BEURT DOORGEVEN");
+		if(schatkamer.getGepakteKaarten().size() > 0) {
+			spelers.get(spelerIndex).geefPunten(schatkamer.getGepakteKaarten()); // Geef de tijdelijke punten aan de speler
+			schatkamer.getGepakteKaarten().clear(); // Leeg de tijdelijke gepakte punten
+		}
 		this.kluis = new Kluis();
+		this.geestkaart = new Geestkaart();
 		for(Speler speler : spelers) {
 			speler.getObservers().get(2).updateMode();
-			speler.getObservers().get(1).updateMode();
+			this.notifySpelers();
 		}
 		this.nextSpeler();
 	}

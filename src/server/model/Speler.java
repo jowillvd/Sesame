@@ -29,6 +29,11 @@ public class Speler implements Serializable {
 		this.observers.add(0, observer);
 		this.id = id;
 		this.naam = "Speler" + String.valueOf(id+1);
+
+		score.add(new ArrayList<Schat>());
+		score.add(new ArrayList<Schat>());
+		score.add(new ArrayList<Schat>());
+		score.add(new ArrayList<Schat>());
 	}
 
 	public List<SesameObserver> getObservers() {
@@ -37,13 +42,13 @@ public class Speler implements Serializable {
 
 	public void setObserver(SesameObserver observer, int positie) throws RemoteException {
 		if(positie == 0) {
-			if(id == 0) observer.setEnabled(true);
+			if(beurt) observer.setEnabled(true);
 			this.observers.set(positie, observer);
 		} else if(observers.size() == 3){
 			if(beurt) observer.setEnabled(true);
 			this.observers.set(positie, observer);
 		} else {
-			if(id == 0) observer.setEnabled(true);
+			if(beurt) observer.setEnabled(true);
 			this.observers.add(positie, observer);
 		}
 	}
@@ -52,15 +57,8 @@ public class Speler implements Serializable {
 		return this.id;
 	}
 
-	public int[] getScore() {
-		int[] scoreArray = new int[9];
-
-		for (int i = 0; i < score.size(); i++) {
-			System.out.println(i);
-			scoreArray[i] = score.get(i).size();
-		}
-
-		return scoreArray;
+	public List<List<Schat>> getScore() {
+		return score;
 	}
 
 	public void setSchat(Schat schat, int i) {
@@ -73,6 +71,25 @@ public class Speler implements Serializable {
 
 	public void setBeurt(boolean b) {
 		this.beurt = b;
+	}
+
+	public void geefPunten(List<Schat> schat) {
+		for (Schat punt : schat) {
+			switch (punt.getKaart()) {
+			case "toverlamp":
+				score.get(0).add(punt);
+				break;
+			case "kelk":
+				score.get(1).add(punt);
+				break;
+			case "ketting":
+				score.get(2).add(punt);
+				break;
+			case "ring":
+				score.get(3).add(punt);
+				break;
+			}
+		}
 	}
 
 }

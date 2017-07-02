@@ -111,6 +111,7 @@ public class MainMenuView implements ViewInterface {
 		grid.add(hostLabel, 0, 2);
 
 		TextField hostField = new TextField();
+		hostField.setText("127.0.0.1");
 		grid.add(hostField, 1, 2);
 
 		Button backBtn = new Button("Terug naar menu");

@@ -16,7 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 
 import server.SesameServerInterface;
-
+import server.model.Schatkamer;
 import client.SesameObserver;
 import client.controller.SchatkamerController;
 
@@ -73,18 +73,27 @@ public class SchatkamerView extends UnicastRemoteObject implements ViewInterface
 		return graphic;
 	}
 
-	public void toonKaart(String kaart, int positie) {
-		if(kaart != null) {
-			Button button = new Button();
-			button.setGraphic(createGraphic("models/schat_" + kaart));
-			button.setTranslateY(50);
+	public void toonKaart(Schatkamer schatkamer) throws RemoteException {
+		String kaart = schatkamer.getGepakteKaart().getKaart();
+
+		StackPane achtergrond = new StackPane();
+		achtergrond.setStyle("-fx-background-color: rgba(0, 0, 0, 0.4)");
+		achtergrond.setAlignment(Pos.CENTER);
+
+		Button button = new Button(kaart);
+		button.setGraphic(createGraphic("models/schat_" + kaart));
+		button.setTranslateY(50);
+		if(this.isEnabled()) {
 			button.setOnAction(e-> {
 				pane.getChildren().remove(1);
 			});
-			pane.getChildren().add(button);
-			System.out.println("HEY");
-		} else {
-			stapels.getChildren().set(positie, new Button("Leeg"));
+		}
+		achtergrond.getChildren().add(button);
+		pane.getChildren().add(achtergrond);
+
+		if(!schatkamer.getActiefStapel().isGevuld()) {
+			stapels.getChildren().set(schatkamer.getActiefStapelPositie(),
+					new Button("Leeg"));
 		}
 	}
 
@@ -93,10 +102,8 @@ public class SchatkamerView extends UnicastRemoteObject implements ViewInterface
 		Platform.runLater(
 				() -> {
 					try {
-						String kaart = server.getSchatkamer().getKaart();
-						System.out.println(kaart);
-						int positie = server.getSchatkamer().getActiefStapelPositie();
-						this.toonKaart(kaart, positie);
+						if(pane.getChildren().size() > 1) pane.getChildren().remove(1);
+						this.toonKaart(server.getSchatkamer());
 						this.controller.setServer(server);
 					} catch (RemoteException e) {
 						e.printStackTrace();

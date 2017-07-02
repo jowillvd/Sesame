@@ -15,6 +15,7 @@ import client.view.KluisView;
 import client.view.LinkerView;
 import client.view.LobbyView;
 import client.view.MainMenuView;
+import client.view.SchatkamerView;
 import client.view.ScoreView;
 import client.view.ViewInterface;
 import client.view.ViewLoader;
@@ -79,9 +80,13 @@ public class MainController {
 			LinkerView linkerView = new LinkerView(this, this.server);
 			KluisView kluisView = new KluisView(kluisController, this.server);
 
+			// DEBUG
+			SchatkamerView debug = new SchatkamerView(
+					new SchatkamerController(this.view, this.server, speler.getId(), this));
+
 			this.viewRight(scoreView);
 			this.viewLeft(linkerView);
-			this.viewCenter(kluisView);
+			this.viewCenter(debug);
 			this.setGameMode(1);
 		} catch (RemoteException re) {
 			re.printStackTrace();

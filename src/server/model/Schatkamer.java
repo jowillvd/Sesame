@@ -1,7 +1,6 @@
 package server.model;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +10,7 @@ import server.model.kaarten.Kaart;
 import server.model.kaarten.Kelk;
 import server.model.kaarten.Ketting;
 import server.model.kaarten.Ring;
+import server.model.kaarten.Schat;
 import server.model.kaarten.Slang;
 import server.model.kaarten.Toverlamp;
 
@@ -19,7 +19,8 @@ public class Schatkamer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private SesameServerInterface server;
 	private KaartenStapel[] stapels = new KaartenStapel[9];
-	private List<Kaart> gepakteKaarten = new ArrayList<Kaart>();
+	private Kaart gepakteKaart;
+	private List<Schat> gepakteKaarten = new ArrayList<Schat>();
 	private int actiefStapel;
 
 	/**
@@ -68,19 +69,15 @@ public class Schatkamer implements Serializable {
 	 * @param positie
 	 * @return schat, of de gepakte kaart een schat is
 	 */
-	public boolean pakKaart(int positie) {
+	public Kaart pakKaart(int positie) {
 		Kaart kaart = stapels[positie].getBovensteKaart();
 		this.actiefStapel = positie;
-		Boolean schat;
-		if(kaart.getKaart() == "slang") {
-			this.gepakteKaarten.clear();
-			schat = false;
-		} else {
-			this.gepakteKaarten.add(kaart);
-			schat = true;
+		if(kaart.getKaart() != "slang") {
+			this.gepakteKaarten.add((Schat) kaart);
 		}
 		stapels[actiefStapel].removeKaart(kaart);
-		return schat;
+		this.gepakteKaart = kaart;
+		return kaart;
 	}
 
 	/**
@@ -100,7 +97,19 @@ public class Schatkamer implements Serializable {
 		return this.actiefStapel;
 	}
 
-	public List<Kaart> getGepakteKaarten() {
+	/**
+	 * Krijg de actieve stapel in het spel.
+	 * @return
+	 */
+	public KaartenStapel getActiefStapel() {
+		return this.stapels[actiefStapel];
+	}
+
+	public Kaart getGepakteKaart() {
+		return this.gepakteKaart;
+	}
+
+	public List<Schat> getGepakteKaarten() {
 		return this.gepakteKaarten;
 	}
 
