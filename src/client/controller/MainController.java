@@ -81,12 +81,12 @@ public class MainController {
 			KluisView kluisView = new KluisView(kluisController, this.server);
 
 			// DEBUG
-			SchatkamerView debug = new SchatkamerView(
-					new SchatkamerController(this.view, this.server, speler.getId(), this));
+			//SchatkamerView debug = new SchatkamerView(
+			//		new SchatkamerController(this.view, this.server, speler.getId(), this));
 
 			this.viewRight(scoreView);
 			this.viewLeft(linkerView);
-			this.viewCenter(debug);
+			this.viewCenter(kluisView);
 			this.setGameMode(1);
 		} catch (RemoteException re) {
 			re.printStackTrace();
@@ -138,6 +138,10 @@ public class MainController {
 
 	public void viewRight(ViewInterface view) {
 		this.view.setRight((Pane) view.getPane());
+	}
+
+	public void alert(String bericht) {
+		this.view.alert(bericht);
 	}
 
 	public boolean isSpelerAanDeBeurt() {

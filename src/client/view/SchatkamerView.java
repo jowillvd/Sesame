@@ -131,6 +131,7 @@ public class SchatkamerView extends UnicastRemoteObject implements ViewInterface
 	public void updateMode() throws RemoteException {
 		Platform.runLater(
 				() -> {
+					this.controller.alert("Kluis wordt gesloten, de volgende speler is nu aan de beurt");
 					this.controller.sluitKluis();
 				}
 		);
