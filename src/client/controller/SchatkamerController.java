@@ -37,13 +37,10 @@ public class SchatkamerController extends MainController {
 
 	public void sluitKluis() {
 		try {
-			if(this.getGameMode() != 3) {
-				KluisController kluisController = new KluisController(this.view, this.server, speler.getId(), controller);
-				this.viewCenter(new KluisView(kluisController, this.server));
-				this.setGameMode(1);
-			} else {
-				this.viewCenter(new DummyView());
-			}
+			KluisController kluisController = new KluisController(this.view, this.server, speler.getId(), controller);
+			this.viewCenter(new KluisView(kluisController, this.server));
+			this.setGameMode(1);
+			this.alert("Kluis wordt gesloten, de volgende speler is nu aan de beurt");
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

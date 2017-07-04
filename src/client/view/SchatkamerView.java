@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
@@ -35,7 +36,7 @@ public class SchatkamerView extends UnicastRemoteObject implements ViewInterface
 		this.controller.setObserver(this, 2);
 
 		Image image = new Image(new File("src/client/resources/layout/achtergrond_1024.jpg").toURI().toString());
-		this.pane.setBackground(new Background(new BackgroundImage(image, null, null, null, null)));
+		this.pane.setBackground(new Background(new BackgroundImage(image, null, null, BackgroundPosition.CENTER, null)));
 		this.pane.setAlignment(Pos.CENTER);
 
 		this.stapels.setPrefColumns(3);
@@ -81,7 +82,7 @@ public class SchatkamerView extends UnicastRemoteObject implements ViewInterface
 		achtergrond.setAlignment(Pos.CENTER);
 
 		Button button = new Button(kaart);
-		button.setGraphic(createGraphic("models/schat_" + kaart));
+		button.setGraphic(createGraphic("models/kaart_" + kaart));
 		button.setTranslateY(50);
 		if(this.isEnabled()) {
 			button.setOnAction(e-> {
@@ -131,7 +132,6 @@ public class SchatkamerView extends UnicastRemoteObject implements ViewInterface
 	public void updateMode() throws RemoteException {
 		Platform.runLater(
 				() -> {
-					this.controller.alert("Kluis wordt gesloten, de volgende speler is nu aan de beurt");
 					this.controller.sluitKluis();
 				}
 		);

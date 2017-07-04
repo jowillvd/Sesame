@@ -1,10 +1,11 @@
 package client.view;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -13,7 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -47,7 +47,7 @@ public class ScoreView extends UnicastRemoteObject implements ViewInterface,
 		pane.getChildren().add(spelersPane);
 	}
 
-	public void toonSpeler(Speler speler) {
+	public void toonSpeler(Speler speler) throws RemoteException {
 		GridPane spelerPane = new GridPane();
 		spelerPane.setPrefSize(300, 60);
 		spelerPane.setStyle("-fx-border-color: #febe4d; -fx-border-width: 4");
@@ -62,15 +62,30 @@ public class ScoreView extends UnicastRemoteObject implements ViewInterface,
 		spelerPane.add(naam, 0, 0, 1, 1);
 
 		ColumnConstraints col1 = new ColumnConstraints();
-		col1.setMinWidth(160);
-		col1.setMaxWidth(160);
+		col1.setMinWidth(140);
+		col1.setMaxWidth(140);
 		spelerPane.getColumnConstraints().add(col1);
 
 		List<List<Schat>> score = speler.getScore();
 		for (int i = 0; i < score.size(); i++) {
 
-			Rectangle schatIcoon = new Rectangle(25,25);
+			Rectangle schatIcoon = new Rectangle(30,30);
 			schatIcoon.setFill(Color.web("#3f47cc"));
+			schatIcoon.setId(String.valueOf(i));
+
+			if(score.get(i).size() > 0
+					&& this.controller.getGameMode() == 3
+					&& this.isEnabled()
+					&& !speler.isAanDeBeurt()) {
+				schatIcoon.setOnMouseClicked(new EventHandler<MouseEvent>()
+		        {
+					@Override
+					public void handle(MouseEvent event) {
+						int schatPositie = Integer.parseInt(schatIcoon.getId());
+						controller.steelSchat(schatPositie, speler.getId());
+					}
+		        });
+			}
 
 			Label aantal = new Label(score.get(i).size() + "x");
 			aantal.setTextFill(Color.web("#ffbc4e"));
@@ -82,12 +97,6 @@ public class ScoreView extends UnicastRemoteObject implements ViewInterface,
 			spelerPane.add(aantal, i+1, 1);
 		}
 		spelersPane.getChildren().add(spelerPane);
-	}
-
-	public void enableSteelMode() {
-		if(this.controller.getGameMode() == 3) {
-
-		}
 	}
 
 	@Override
@@ -126,6 +135,7 @@ public class ScoreView extends UnicastRemoteObject implements ViewInterface,
 		Platform.runLater(
 				() -> {
 					this.controller.setGameMode(3);
+					this.controller.viewCenter(new DummyView());
 				}
 		);
 	}

@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -41,7 +42,7 @@ public class KluisView extends UnicastRemoteObject implements ViewInterface,
 		this.controller.setObserver(this, 2);
 
 		Image image = new Image(new File("src/client/resources/layout/achtergrond_1024.jpg").toURI().toString());
-		this.pane.setBackground(new Background(new BackgroundImage(image, null, null, null, null)));
+		this.pane.setBackground(new Background(new BackgroundImage(image, null, null, BackgroundPosition.CENTER, null)));
 		this.pane.setAlignment(Pos.CENTER);
 
 		this.slotenPane.setPrefColumns(3);

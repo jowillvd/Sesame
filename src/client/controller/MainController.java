@@ -15,7 +15,6 @@ import client.view.KluisView;
 import client.view.LinkerView;
 import client.view.LobbyView;
 import client.view.MainMenuView;
-import client.view.SchatkamerView;
 import client.view.ScoreView;
 import client.view.ViewInterface;
 import client.view.ViewLoader;
