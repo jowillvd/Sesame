@@ -77,15 +77,7 @@ public class Schatkamer implements Serializable {
 		}
 		stapels[actiefStapel].removeKaart(kaart);
 		this.gepakteKaart = kaart;
-		this.controleerAantalKaarten();
 		return kaart;
-	}
-
-	private void controleerAantalKaarten() {
-		for (int i = 0; i < stapels.length; i++) {
-			if(stapels[i].isGevuld()) return;
-		}
-		server.endGame();
 	}
 
 	/**

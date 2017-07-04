@@ -106,6 +106,7 @@ public class SchatkamerView extends UnicastRemoteObject implements ViewInterface
 						if(pane.getChildren().size() > 1) pane.getChildren().remove(1);
 						this.toonKaart(server.getSchatkamer());
 						this.controller.setServer(server);
+						this.controller.controlleerStatus();
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}

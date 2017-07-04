@@ -61,6 +61,17 @@ public class Speler implements Serializable {
 		return score;
 	}
 
+	public int getPunten() {
+		int punten = 0;
+		for ( List<Schat> score : score) {
+			if(score.size() > 0) {
+				int waarde = score.get(0).getWaarde();
+				punten += score.size() * waarde;
+			}
+		}
+		return punten;
+	}
+
 	public void setSchat(Schat schat, int i) {
 		this.score.get(i).add(schat);
 	}

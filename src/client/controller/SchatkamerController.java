@@ -55,4 +55,14 @@ public class SchatkamerController extends MainController {
 		return controller.getGameMode();
 	}
 
+	public void controlleerStatus() {
+		try {
+			if(server.getGepakteSlangen() == 7) {
+				this.endGame();
+			}
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

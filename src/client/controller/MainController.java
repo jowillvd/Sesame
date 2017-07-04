@@ -4,6 +4,7 @@ import java.io.File;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -89,6 +90,25 @@ public class MainController {
 			this.setGameMode(1);
 		} catch (RemoteException re) {
 			re.printStackTrace();
+		}
+	}
+
+	public void endGame() {
+		try {
+			int hoogsteScore = -1;
+			Speler winnaar = null;
+			for (Speler speler : server.getSpelers()) {
+				if(speler.getPunten() > hoogsteScore) {
+					hoogsteScore = speler.getPunten();
+					winnaar = speler;
+				}
+			}
+			alert("Einde van het spel. De winnaar is \'" + winnaar.naam + "\' met "
+					+ hoogsteScore + " punten!");
+			Platform.exit();
+
+		} catch (RemoteException e) {
+			e.printStackTrace();
 		}
 	}
 

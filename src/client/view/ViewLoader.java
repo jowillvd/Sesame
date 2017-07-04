@@ -14,7 +14,7 @@ public class ViewLoader extends BorderPane {
 		this.controller = new MainController(this);
 
 		this.setStyle("-fx-background-color: #87CEFA;");
-		this.setPrefSize(1200, 750);
+		//this.setPrefSize(1200, 750);
 	}
 
 	public void alert(String bericht) {
