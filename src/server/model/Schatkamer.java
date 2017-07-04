@@ -23,6 +23,11 @@ public class Schatkamer implements Serializable {
 	private List<Schat> gepakteKaarten = new ArrayList<Schat>();
 	private int actiefStapel;
 
+	private int maxRingen = 12;
+	private int maxKelken = 10;
+	private int maxSlangen = 7;
+	private int maxKettingen = 6;
+
 	/**
 	 * De constructor van de schatkamer.
 	 * Er wordt een list gemaakt met kaarten die gebruikt kunnen worden. Vervolgens
@@ -34,16 +39,16 @@ public class Schatkamer implements Serializable {
 		this.server = server;
 
 		List<Kaart> uitdeelbareKaarten = new ArrayList<Kaart>(36); // Mogelijke kaarten
-		for(int i = 0; i < 12; i++) {
+		for(int i = 0; i < maxRingen; i++) {
 			uitdeelbareKaarten.add(new Ring());
 		}
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < maxKelken; i++) {
 			uitdeelbareKaarten.add(new Kelk());
 		}
-		for(int i = 0; i < 7; i++) {
+		for(int i = 0; i < maxSlangen; i++) {
 			uitdeelbareKaarten.add(new Slang());
 		}
-		for(int i = 0; i < 6; i++) {
+		for(int i = 0; i < maxKettingen; i++) {
 			uitdeelbareKaarten.add(new Ketting());
 		}
 		for(int i = 0; i < 1; i++) {
@@ -99,7 +104,7 @@ public class Schatkamer implements Serializable {
 
 	/**
 	 * Krijg de actieve stapel in het spel.
-	 * @return
+	 * @return kaartenStapel
 	 */
 	public KaartenStapel getActiefStapel() {
 		return this.stapels[actiefStapel];
@@ -111,6 +116,17 @@ public class Schatkamer implements Serializable {
 
 	public List<Schat> getGepakteKaarten() {
 		return this.gepakteKaarten;
+	}
+
+	/**
+	 * Voeg kaarten toe aan de mogelijke kaarten,
+	 * dit wordt to nu toe nog hard gecodeerd.
+	 */
+	public void verhoogMaxKaarten() {
+		this.maxRingen = maxRingen + 4;
+		this.maxKelken = maxKelken + 2;
+		this.maxSlangen = maxSlangen + 2;
+		this.maxKettingen = maxKettingen + 1;
 	}
 
 }

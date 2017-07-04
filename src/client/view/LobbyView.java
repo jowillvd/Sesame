@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -37,6 +38,8 @@ public class LobbyView extends UnicastRemoteObject implements ViewInterface,
 		Text titel = new Text("Sesame");
 		titel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 		spelersPane.add(titel, 0, 0, 2, 1);
+		spelersPane.setAlignment(Pos.CENTER);
+		box.setAlignment(Pos.CENTER);
 		box.getChildren().add(spelersPane);
 		this.pane.getChildren().add(box);
 

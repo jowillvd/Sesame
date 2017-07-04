@@ -66,6 +66,13 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		}
 	}
 
+	/**
+	 * Registreer een speler.
+	 * Er wordt een nieuwe speler aangemaakt met de eerste observer van de LobbyView.
+	 * @param observer, LobbyView
+	 * @param spelernaam, de naam van de speler
+	 * @throws RemoteExceptions
+	 */
 	@Override
 	public Speler registerSpeler(SesameObserver observer, String spelernaam) throws RemoteException {
 		System.out.println(" - Server - Nieuwe speler registreren, speler id: "
@@ -86,6 +93,12 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		return speler;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see server.SesameServerInterface#unregisterSpeler(server.model.Speler)
+	 * Wordt nog niet gebruikt...
+	 * Moet komen wanneer een speler het spel verlaat.
+	 */
 	@Override
 	public void unregisterSpeler(Speler speler) throws RemoteException {
 		System.out.println(" - Server - Observer registratie verwijderen, observer positie: "
@@ -160,6 +173,12 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 		}
 	}
 
+	/**
+	 * Controlleer de aantal pogingen.
+	 * Als een poging goed gegaan is wordt het weer gereset naar nul.
+	 * Anders wordt het verhoogd.
+	 * @param i
+	 */
 	private void checkPoging(int i) {
 		int slotId = kluis.getSloten()[i].getSymbool().id;
 		int geestkaartSymboolId = geestkaart.getSymbolen()[i].id;
@@ -340,11 +359,10 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 			speler.getObservers().get(0).updateMode();
 		}
 		this.checkSloten();
-	}
-
-	public void endGame() {
-		System.out.println(" - Server - Spel wordt gestopt, scores worden getoond.");
-
+		// Als er meer dan 5 spelers zijn wordt de schat uitgebreid
+		if(spelers.size() > 5) {
+			schatkamer.verhoogMaxKaarten();
+		}
 	}
 
 	/**
@@ -394,6 +412,8 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	}
 
 	/**
+	 * beurt doorgeven aan de volgende speler.
+	 * Het spel wordt weer in de kluis stand gezet. De kluis en Geestkaart worden gereset.
 	 * @throws RemoteException
 	 */
 	public void beurtDoorgeven() throws RemoteException {

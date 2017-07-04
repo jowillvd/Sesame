@@ -1,15 +1,11 @@
 package client.controller;
 
-import java.io.File;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import javafx.application.Platform;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-
 import client.SesameClient;
 import client.SesameObserver;
 import client.view.KluisView;
@@ -65,14 +61,6 @@ public class MainController {
 	public void startGame() {
 		System.out.println("Host start het spel");
 		try {
-			ImageView boven = new ImageView();
-			boven.setImage(new Image(new File("src/client/resources/layout/boven.png").toURI().toString()));
-			this.view.setTop(boven);
-
-			ImageView beneden = new ImageView();
-			beneden.setImage(new Image(new File("src/client/resources/layout/beneden.png").toURI().toString()));
-			this.view.setBottom(beneden);
-
 			KluisController kluisController = new KluisController(this.view, this.server, speler.getId(), this);
 			ScoreController scoreController = new ScoreController(this.view, this.server, speler.getId(), this);
 
@@ -83,6 +71,7 @@ public class MainController {
 			// DEBUG
 			//SchatkamerView debug = new SchatkamerView(
 			//		new SchatkamerController(this.view, this.server, speler.getId(), this));
+
 
 			this.viewRight(scoreView);
 			this.viewLeft(linkerView);
@@ -106,7 +95,7 @@ public class MainController {
 			alert("Einde van het spel. De winnaar is \'" + winnaar.naam + "\' met "
 					+ hoogsteScore + " punten!");
 			Platform.exit();
-
+			System.exit(1);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

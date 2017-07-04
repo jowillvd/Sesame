@@ -1,5 +1,6 @@
 package client.view;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,6 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 
 import client.controller.MainController;
 
@@ -42,7 +47,6 @@ public class MainMenuView implements ViewInterface {
 
 		box.getChildren().addAll(hostBtn, joinBtn, hanleidingBtn, stopBtn);
 		box.setAlignment( Pos.CENTER );
-		box.setStyle("-fx-background-color: #2f2f2f;");
 
 		this.pane.getChildren().addAll(box);
 	}
@@ -130,12 +134,17 @@ public class MainMenuView implements ViewInterface {
 	}
 
 	private void handleHandleidingAction(ActionEvent e) {
-		System.out.println("Handleiding openen...");
-		//controller.openHandleiding();
+		File pdf = new File("src/client/resources/Sesame_handleiding.pdf");
+    	try {
+			Desktop.getDesktop().open(pdf);
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 
 	private void handleStopAction(ActionEvent e) {
-		System.out.println("Spel afsluiten...");
+		Platform.exit();
+		System.exit(1);
 	}
 
 	@Override

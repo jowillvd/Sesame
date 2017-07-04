@@ -1,7 +1,7 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import javafx.stage.StageStyle;
 import client.view.ViewLoader;
 
 public class Start extends Application {
@@ -12,6 +12,7 @@ public class Start extends Application {
 		primaryStage.setTitle("Sesame");
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
+		primaryStage.initStyle(StageStyle.UNDECORATED);
 		primaryStage.show();
 	}
 

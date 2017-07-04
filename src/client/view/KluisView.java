@@ -91,7 +91,6 @@ public class KluisView extends UnicastRemoteObject implements ViewInterface,
             	slotPane.setCenter(slotView);
             	slotPane.setLeft(buttonLinks);
             	slotPane.setRight(buttonRechts);
-            	slotPane.setBottom(new Label("" + sloten[slotIndex].isPositieJuist()));//createButton("layout/positie_" + bool));
 
             	this.slotenPane.getChildren().add(slotPane);
                 slotIndex++;
