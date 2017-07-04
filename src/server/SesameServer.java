@@ -290,7 +290,13 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 			this.gepakteSlangen++;
 			if(schatkamer.getGepakteKaarten().size() > 0) {
 				schatkamer.getGepakteKaarten().clear();
-				this.beurtDoorgeven();
+				if(this.gepakteSlangen == 7) {
+					this.setInstructies("Alle slangen zijn gepakt. De kluis kan niet meer geopend worden. "
+							+ "Dit is het einde van het spel, bedankt voor het spelen.");
+					this.endGame();
+				} else {
+					this.beurtDoorgeven();
+				}
 			} else {
 				this.steelMode();
 			}
@@ -340,6 +346,11 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 			speler.getObservers().get(0).updateMode();
 		}
 		this.checkSloten();
+	}
+
+	public void endGame() {
+		System.out.println(" - Server - Spel wordt gestopt, scores worden getoond.");
+		
 	}
 
 	/**

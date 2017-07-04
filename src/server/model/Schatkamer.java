@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import server.SesameServerInterface;
+import server.SesameServer;
 import server.model.kaarten.Kaart;
 import server.model.kaarten.Kelk;
 import server.model.kaarten.Ketting;
@@ -17,7 +17,7 @@ import server.model.kaarten.Toverlamp;
 public class Schatkamer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private SesameServerInterface server;
+	private SesameServer server;
 	private KaartenStapel[] stapels = new KaartenStapel[9];
 	private Kaart gepakteKaart;
 	private List<Schat> gepakteKaarten = new ArrayList<Schat>();
@@ -30,7 +30,7 @@ public class Schatkamer implements Serializable {
 	 * in een ArrayList genaamd stapels.
 	 * @param server
 	 */
-	public Schatkamer(SesameServerInterface server) {
+	public Schatkamer(SesameServer server) {
 		this.server = server;
 
 		List<Kaart> uitdeelbareKaarten = new ArrayList<Kaart>(36); // Mogelijke kaarten
@@ -77,7 +77,15 @@ public class Schatkamer implements Serializable {
 		}
 		stapels[actiefStapel].removeKaart(kaart);
 		this.gepakteKaart = kaart;
+		this.controleerAantalKaarten();
 		return kaart;
+	}
+
+	private void controleerAantalKaarten() {
+		for (int i = 0; i < stapels.length; i++) {
+			if(stapels[i].isGevuld()) return;
+		}
+		server.endGame();
 	}
 
 	/**

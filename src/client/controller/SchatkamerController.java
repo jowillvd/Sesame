@@ -2,7 +2,6 @@ package client.controller;
 
 import java.rmi.RemoteException;
 
-import client.view.DummyView;
 import client.view.KluisView;
 import client.view.ViewLoader;
 

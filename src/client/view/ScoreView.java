@@ -5,16 +5,19 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.io.File;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
@@ -70,7 +73,9 @@ public class ScoreView extends UnicastRemoteObject implements ViewInterface,
 		for (int i = 0; i < score.size(); i++) {
 
 			Rectangle schatIcoon = new Rectangle(30,30);
-			schatIcoon.setFill(Color.web("#3f47cc"));
+			System.out.println("schat_" + i + ".png");
+			Image img = new Image(new File("src/client/resources/models/schat_" + i + ".png").toURI().toString());
+			schatIcoon.setFill(new ImagePattern(img));
 			schatIcoon.setId(String.valueOf(i));
 
 			if(score.get(i).size() > 0

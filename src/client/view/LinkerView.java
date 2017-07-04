@@ -172,8 +172,4 @@ public class LinkerView extends UnicastRemoteObject implements ViewInterface,
 		);
 	}
 
-	public void addBottom(GeestkaartView geestkaartView) {
-		this.pane.getChildren().add(geestkaartView.getPane());
-	}
-
 }
