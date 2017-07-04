@@ -125,7 +125,7 @@ public class Schatkamer implements Serializable {
 	public void verhoogMaxKaarten() {
 		this.maxRingen = maxRingen + 4;
 		this.maxKelken = maxKelken + 2;
-		this.maxSlangen = maxSlangen + 2;
+		this.maxSlangen = maxSlangen + 3;
 		this.maxKettingen = maxKettingen + 1;
 	}
 
