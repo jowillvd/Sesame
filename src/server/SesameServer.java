@@ -23,7 +23,7 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 	private List<Speler> spelers = new ArrayList<Speler>();
 	private Geestkaart geestkaart = new Geestkaart();
 	private Kluis kluis = new Kluis();
-	private Schatkamer schatkamer = new Schatkamer(this);
+	private Schatkamer schatkamer = new Schatkamer();
 	private int spelerIndex;
 	private int gepakteSlangen;
 	private int pogingen = 0;
@@ -359,10 +359,6 @@ public class SesameServer extends UnicastRemoteObject implements SesameServerInt
 			speler.getObservers().get(0).updateMode();
 		}
 		this.checkSloten();
-		// Als er meer dan 5 spelers zijn wordt de schat uitgebreid
-		if(spelers.size() > 5) {
-			schatkamer.verhoogMaxKaarten();
-		}
 	}
 
 	/**

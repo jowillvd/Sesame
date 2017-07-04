@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import server.SesameServer;
 import server.model.kaarten.Kaart;
 import server.model.kaarten.Kelk;
 import server.model.kaarten.Ketting;
@@ -17,16 +16,10 @@ import server.model.kaarten.Toverlamp;
 public class Schatkamer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private SesameServer server;
 	private KaartenStapel[] stapels = new KaartenStapel[9];
 	private Kaart gepakteKaart;
 	private List<Schat> gepakteKaarten = new ArrayList<Schat>();
 	private int actiefStapel;
-
-	private int maxRingen = 12;
-	private int maxKelken = 10;
-	private int maxSlangen = 7;
-	private int maxKettingen = 6;
 
 	/**
 	 * De constructor van de schatkamer.
@@ -35,20 +28,18 @@ public class Schatkamer implements Serializable {
 	 * in een ArrayList genaamd stapels.
 	 * @param server
 	 */
-	public Schatkamer(SesameServer server) {
-		this.server = server;
-
+	public Schatkamer() {
 		List<Kaart> uitdeelbareKaarten = new ArrayList<Kaart>(36); // Mogelijke kaarten
-		for(int i = 0; i < maxRingen; i++) {
+		for(int i = 0; i < 12; i++) {
 			uitdeelbareKaarten.add(new Ring());
 		}
-		for(int i = 0; i < maxKelken; i++) {
+		for(int i = 0; i < 10; i++) {
 			uitdeelbareKaarten.add(new Kelk());
 		}
-		for(int i = 0; i < maxSlangen; i++) {
+		for(int i = 0; i < 7; i++) {
 			uitdeelbareKaarten.add(new Slang());
 		}
-		for(int i = 0; i < maxKettingen; i++) {
+		for(int i = 0; i < 6; i++) {
 			uitdeelbareKaarten.add(new Ketting());
 		}
 		for(int i = 0; i < 1; i++) {
@@ -104,7 +95,7 @@ public class Schatkamer implements Serializable {
 
 	/**
 	 * Krijg de actieve stapel in het spel.
-	 * @return kaartenStapel
+	 * @return
 	 */
 	public KaartenStapel getActiefStapel() {
 		return this.stapels[actiefStapel];
@@ -116,17 +107,6 @@ public class Schatkamer implements Serializable {
 
 	public List<Schat> getGepakteKaarten() {
 		return this.gepakteKaarten;
-	}
-
-	/**
-	 * Voeg kaarten toe aan de mogelijke kaarten,
-	 * dit wordt to nu toe nog hard gecodeerd.
-	 */
-	public void verhoogMaxKaarten() {
-		this.maxRingen = maxRingen + 4;
-		this.maxKelken = maxKelken + 2;
-		this.maxSlangen = maxSlangen + 3;
-		this.maxKettingen = maxKettingen + 1;
 	}
 
 }
